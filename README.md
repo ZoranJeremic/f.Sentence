@@ -12,16 +12,26 @@ It's minimal.
 It's powerful.  
 And it's only the beginning.
 
+## Status
+
+**Coming soon.**  
+This project is in early development. Updates will follow.
+
 ## Vision
 
 In a world flooded with bloated software and forgotten design,  
 f.Sentence is a return to clarity —  
 a tool that respects your thoughts, your time, and your creativity.
 
-## Status
+## Development roadmap
 
-**Coming soon.**  
-This project is in early development. Updates will follow.
+- [X] Early development
+- [ ] Canary release for Android
+- [ ] Canary release for Windows
+- [ ] Beta release
+- [ ] First public release
+- [ ] PDF support
+- [ ] Stylus support
 
 ## License
 
