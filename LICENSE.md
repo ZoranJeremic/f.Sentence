@@ -1,9 +1,15 @@
 Copyright (c) 2025 Zoran Jeremić
 
-Permission is hereby granted to any person obtaining a copy of this software and associated documentation files (the "Software"), to remix, modify, and distribute copies of the Software for personal, educational, or non-commercial use, subject to the following conditions:
-1. The Software is provided under an open-source model, and contributions, forks, and remixes are encouraged, provided that proper credit is given to the original author.
-2. Monetization of the Software or its derivatives is permitted only by the original author, Zoran Jeremić. Any commercial use, paid distribution, or monetized services based on the Software by third parties is strictly prohibited without explicit written permission from the author.
-3. The name "f.Sentence" and all associated branding remain the intellectual property of Zoran Jeremić and may not be used for commercial purposes without permission.
-4. This license does not grant rights to use the Software's name, logo, or branding in a way that suggests endorsement by the original author.
+This license allows users to freely use, copy, modify, distribute, and fork the code under the following conditions:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+1. **Commercial Use:** The author retains exclusive rights to the commercial use of this code. Any commercial use of the code or derivative works, including licensing, selling, or distributing for commercial purposes, must be agreed upon with the author and explicitly approved.
+
+2. **Distribution and Modifications:** Users are allowed to distribute modified versions of the code, as long as they adhere to the following:
+   - The code must remain open and available under this license.
+   - The original author must be clearly credited in any modified version, but the right to profit from the commercial distribution or use of the code remains exclusively with the author.
+
+3. **Forks:** Forked projects, while free to modify and distribute, must comply with this same license. However, any commercial use of forks must be agreed upon with the author, and the profit from such use must be directed entirely to the original author.
+
+4. **Profit Rights:** No individual, organization, or entity, including those who fork or modify the code, is allowed to profit from or benefit from the original code or its modifications without the explicit consent of the author.
+
+This license grants users the right to freely use, modify, and distribute the code, but retains commercial rights exclusively for the author.
