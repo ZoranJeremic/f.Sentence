@@ -38,6 +38,6 @@ a tool that respects your thoughts, your time, and your creativity.
 f.Sentence is open source under a **custom FOSS license**.  
 You can view, remix, and contribute — but monetization is reserved to the author, **Zoran Jeremić**.
 
-More details in [LICENSE.md](LICENSE.md).
+More details in [LICENSE file](LICENSE).
 
 Part of the **Flake** vision.  
