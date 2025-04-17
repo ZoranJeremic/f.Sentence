@@ -36,8 +36,7 @@ a tool that respects your thoughts, your time, and your creativity.
 
 ## License
 
-f.Sentence is open source under a **custom FOSS license**.  
-You can view, remix, and contribute — but monetization is reserved to the author, **Zoran Jeremić**.
+f.Sentence is published under [GNU General Public License v3.0]. For more information on licensing, visit https://www.gnu.org/licenses/agpl-3.0.en.html.
 
 More details in [LICENSE file](LICENSE).
 
