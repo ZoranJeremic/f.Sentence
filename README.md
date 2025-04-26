@@ -1,10 +1,10 @@
 # f.Sentence
 
+![SmartSelect_20250416-162248_M365 Copilot](https://github.com/user-attachments/assets/fa55ed8b-6cd3-4867-a2cb-9c0b90b1c89f)
+
 ![Flutter](https://img.shields.io/badge/Made%20with-Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)
 ![Early Development](https://img.shields.io/badge/status-early%20development-orange?style=for-the-badge)
-
-![SmartSelect_20250416-162248_M365 Copilot](https://github.com/user-attachments/assets/fa55ed8b-6cd3-4867-a2cb-9c0b90b1c89f)
 
 **f.Sentence** isn't just another text editor — it's the beginning of a new way to write.
 
