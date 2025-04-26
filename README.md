@@ -36,7 +36,7 @@ a tool that respects your thoughts, your time, and your creativity.
 
 ## License
 
-f.Sentence is published under [GNU General Public License v3.0]. For more information on licensing, visit https://www.gnu.org/licenses/gpl-3.0.en.html
+f.Sentence is published under GNU General Public License v3.0. For more information on licensing, visit https://www.gnu.org/licenses/gpl-3.0.en.html
 
 More details in [LICENSE file](LICENSE).
 
