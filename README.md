@@ -1,5 +1,8 @@
 # f.Sentence
 
+![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
+![Flutter](https://img.shields.io/badge/Made%20with-Flutter-blue)
+
 ![SmartSelect_20250416-162248_M365 Copilot](https://github.com/user-attachments/assets/fa55ed8b-6cd3-4867-a2cb-9c0b90b1c89f)
 
 **f.Sentence** isn't just another text editor — it's the beginning of a new way to write.
