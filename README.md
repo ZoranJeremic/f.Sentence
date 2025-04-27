@@ -38,6 +38,12 @@ a tool that respects your thoughts, your time, and your creativity.
 - [ ] PDF support
 - [ ] Stylus support
 
+You can find changelog [in Changelog file](CHANGELOG.md). 
+
+## Contributing
+
+If you want to contribute to our project, please check our [Code of Conduct](CODE_OF_CONDUCT.md). 
+
 ## License
 
 f.Sentence is published under GNU General Public License v3.0. For more information on licensing, visit https://www.gnu.org/licenses/gpl-3.0.en.html
