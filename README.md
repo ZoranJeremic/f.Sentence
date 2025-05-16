@@ -1,4 +1,5 @@
-# Sentence
+# f.Sentence
+Pronounced without dot
 
 ![SmartSelect_20250416-162248_M365 Copilot](https://github.com/user-attachments/assets/fa55ed8b-6cd3-4867-a2cb-9c0b90b1c89f)
 
@@ -6,7 +7,7 @@
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)
 ![Early Development](https://img.shields.io/badge/status-early%20development-orange?style=for-the-badge)
 
-**Sentence** isn't just another text editor — it's the beginning of a new way to write.
+**f.Sentence** isn't just another text editor — it's the beginning of a new way to write.
 
 Crafted with **Flutter** and designed around **Material You**,  
 f.Sentence is being built to rethink how text processing should feel in the modern age —  
@@ -25,7 +26,7 @@ This project is in early development. Updates will follow.
 ## Vision
 
 In a world flooded with bloated software and forgotten design,  
-Sentence is a return to clarity —  
+f.Sentence is a return to clarity —  
 a tool that respects your thoughts, your time, and your creativity.
 
 ## Development roadmap
@@ -46,7 +47,7 @@ If you want to contribute to our project, please check our [Code of Conduct](COD
 
 ## License
 
-Sentence is published under GNU General Public License v3.0. For more information on licensing, visit https://www.gnu.org/licenses/gpl-3.0.en.html
+f.Sentence is published under GNU General Public License v3.0. For more information on licensing, visit https://www.gnu.org/licenses/gpl-3.0.en.html
 
 More details in [LICENSE file](LICENSE).
 
