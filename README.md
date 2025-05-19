@@ -9,3 +9,8 @@ App is 100% FOSS with no ads or in-app purchases.
 # Development status
 
 Currently in early development. Updates will follow. 
+
+# Upcoming features
+
+- [X] Note taking with basic formatting
+- [ ] Opening documen
