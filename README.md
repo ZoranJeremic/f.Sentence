@@ -10,6 +10,8 @@ App is 100% FOSS with no ads or in-app purchases.
 
 Currently in early development. Updates will follow. 
 
+Current builds support Android 5 Lollipop and later.
+
 # Upcoming features
 
 - [X] Note taking with basic formatting
@@ -19,4 +21,4 @@ Currently in early development. Updates will follow.
 - [ ] PDF annotation
 - [ ] Ebook reader
 - [ ] Document creation
-- [ ] 
+- [ ] Document templates
