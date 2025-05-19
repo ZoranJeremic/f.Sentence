@@ -13,4 +13,8 @@ Currently in early development. Updates will follow.
 # Upcoming features
 
 - [X] Note taking with basic formatting
-- [ ] Opening documen
+- [ ] Opening documents from internal storage
+- [ ] PDF reading
+- [ ] PDF editing
+- [ ] Ebook reader
+- [ ] Document 
