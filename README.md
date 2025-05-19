@@ -8,11 +8,7 @@ App is 100% FOSS with no ads or in-app purchases.
 
 # Development status
 
-Currently in early development. Updates will follow. 
-
-Release date will be somewhere around July 2025.
-
-Current builds support Android 5 Lollipop and later.
+Currently in early development. Updates will follow. Release date will be somewhere around July 2025. Current builds support Android 5 Lollipop and later.
 
 # Upcoming features
 
@@ -28,3 +24,5 @@ Current builds support Android 5 Lollipop and later.
 # Licensing
 
 This project is licensed under GNU General Public License v3.0. More details in license file. 
+
+# Contributing to this project
