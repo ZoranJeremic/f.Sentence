@@ -24,3 +24,7 @@ Current builds support Android 5 Lollipop and later.
 - [ ] Ebook reader
 - [ ] Document creation
 - [ ] Document templates
+
+# Licensing
+
+This project is licensed under GNU General Public License v3.0. More details in license file. 
