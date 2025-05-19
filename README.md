@@ -1,19 +1,11 @@
-# Sentence
+# f.Sentence
+*Pronunced without dot*
+![ic_launcher](https://github.com/user-attachments/assets/094cf8ce-40c3-4105-9948-02e25955561a)
 
-A new Flutter project created with FlutLab - https://flutlab.io
+f.Sentence is ultra-powerful text editor, note taking and PDF editor and reader app with intuitive Material You 3 design.
 
-## Getting Started
+App is 100% FOSS with no ads or in-app purchases.
 
-A few resources to get you started if this is your first Flutter project:
+# Development status
 
-- https://flutter.dev/docs/get-started/codelab
-- https://flutter.dev/docs/cookbook
-
-For help getting started with Flutter, view our
-https://flutter.dev/docs, which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-## Getting Started: FlutLab - Flutter Online IDE
-
-- How to use FlutLab? Please, view our https://flutlab.io/docs
-- Join the discussion and conversation on https://flutlab.io/residents
+Currently in early development. Updates will follow. 
