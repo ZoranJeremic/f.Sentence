@@ -26,3 +26,5 @@ Currently in early development. Updates will follow. Release date will be somewh
 This project is licensed under GNU General Public License v3.0. More details in license file. 
 
 # Contributing to this project
+
+If you are interested in contributing to f.Sentence, please check Code of Conduct provided in this repo. 
