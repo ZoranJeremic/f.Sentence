@@ -16,5 +16,7 @@ Currently in early development. Updates will follow.
 - [ ] Opening documents from internal storage
 - [ ] PDF reading
 - [ ] PDF editing
+- [ ] PDF annotation
 - [ ] Ebook reader
-- [ ] Document 
+- [ ] Document creation
+- [ ] 
