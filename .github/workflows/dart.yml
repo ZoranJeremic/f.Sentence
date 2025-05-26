@@ -1,4 +1,4 @@
-name: f.Sentence APK
+name: Build f.Sentence APK
 
 on:
   push:
@@ -10,21 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: "3.19.2"
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.2'
 
-    - name: Install dependencies
-      run: flutter pub get
+      - name: Run flutter doctor
+        run: flutter doctor -v
 
-    - name: Build release APK
-      run: flutter build apk --release
+      - name: Get dependencies
+        run: flutter pub get
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: release-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: f.Sentence-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
