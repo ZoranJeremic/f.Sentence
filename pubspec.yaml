@@ -1,6 +1,6 @@
 name: Sentence
 description: A Flutter app for managing documents and notes.
-version: 1.0.0+5
+version: 1.0.1 + 1
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
