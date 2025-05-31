@@ -1,33 +1,90 @@
 import 'package:flutter/material.dart';
-import 'package:dynamic_color/dynamic_color.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  // Definišemo osnovne **Frutiger Aero** boje
+  final Color aeroPrimary = Color(0xFF00BFFF); // Svetlo plava
+  final Color aeroSecondary = Color(0xFFB0E0E6); // Plavičasto bela
+  final Color aeroAccent = Color(0xFF40E0D0); // Tirkizna
+  final Color aeroBackground = Color(0xFFE0FFFF); // Svetlo plava pozadina
+  final Color aeroSurface = Color(0xFFFFFFFF); // Bela površina
+
+  // Boje za tamni režim
+  final Color aeroDarkPrimary = Color(0xFF009ACD); // Tamno plava
+  final Color aeroDarkBackground = Color(0xFF121212); // Skoro crna
+  final Color aeroDarkSurface = Color(0xFF1E1E1E); // Tamna površina
+
   @override
   Widget build(BuildContext context) {
-    return DynamicColorBuilder(
-      builder: (lightColorScheme, darkColorScheme) {
-        return MaterialApp(
-          title: 'f.Sentence',
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: lightColorScheme ?? ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple,
-              brightness: Brightness.light,
+    return MaterialApp(
+      title: 'f.Sentence',
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          primary: aeroPrimary,
+          onPrimary: Colors.white,
+          secondary: aeroSecondary,
+          onSecondary: Colors.black,
+          background: aeroBackground,
+          onBackground: Colors.black,
+          surface: aeroSurface,
+          onSurface: Colors.black,
+          error: Colors.redAccent,
+          onError: Colors.white,
+        ),
+        scaffoldBackgroundColor: aeroBackground,
+        appBarTheme: AppBarTheme(
+          backgroundColor: aeroPrimary,
+          foregroundColor: Colors.white,
+          centerTitle: true,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: aeroAccent,
+          foregroundColor: Colors.black,
+        ),
+        textTheme: ThemeData.light().textTheme.apply(
+              fontFamily: 'Frutiger',
+              bodyColor: Colors.black87,
+              displayColor: Colors.black87,
             ),
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: darkColorScheme ?? ColorScheme.fromSeed(
-              seedColor: Colors.deepPurple,
-              brightness: Brightness.dark,
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme(
+          brightness: Brightness.dark,
+          primary: aeroDarkPrimary,
+          onPrimary: Colors.white,
+          secondary: aeroAccent,
+          onSecondary: Colors.black,
+          background: aeroDarkBackground,
+          onBackground: Colors.white,
+          surface: aeroDarkSurface,
+          onSurface: Colors.white,
+          error: Colors.redAccent,
+          onError: Colors.white,
+        ),
+        scaffoldBackgroundColor: aeroDarkBackground,
+        appBarTheme: AppBarTheme(
+          backgroundColor: aeroDarkPrimary,
+          foregroundColor: Colors.white,
+          centerTitle: true,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: aeroAccent,
+          foregroundColor: Colors.black,
+        ),
+        textTheme: ThemeData.dark().textTheme.apply(
+              fontFamily: 'Frutiger',
+              bodyColor: Colors.white,
+              displayColor: Colors.white,
             ),
-          ),
-          themeMode: ThemeMode.system,
-          home: HomeScreen(),
-        );
-      },
+      ),
+      themeMode: ThemeMode.system,
+      home: HomeScreen(),
     );
   }
 }
@@ -65,12 +122,28 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showPopupMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (_) => Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(leading: Icon(Icons.note_add), title: Text('New note')),
-          ListTile(leading: Icon(Icons.picture_as_pdf), title: Text('Open PDF')),
-          ListTile(leading: Icon(Icons.draw), title: Text('New drawing')),
+          ListTile(
+            leading: Icon(Icons.note_add, color: Theme.of(context).colorScheme.primary),
+            title: Text('New note'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.picture_as_pdf, color: Theme.of(context).colorScheme.primary),
+            title: Text('Open PDF'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.draw, color: Theme.of(context).colorScheme.primary),
+            title: Text('New drawing'),
+            onTap: () {},
+          ),
         ],
       ),
     );
@@ -92,34 +165,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildDocumentCard(Document doc) {
-    return Dismissible(
-      key: Key(doc.title),
-      background: Container(
-        color: Colors.red,
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 20),
-        child: Icon(Icons.delete, color: Colors.white),
-      ),
-      secondaryBackground: Container(
-        color: Colors.blue,
-        alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 20),
-        child: Icon(Icons.archive, color: Colors.white),
-      ),
-      onDismissed: (direction) {
-        if (direction == DismissDirection.startToEnd) {
-          _onDelete(doc);
-        } else {
-          _onArchive(doc);
-        }
-      },
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
         title: Text(doc.title),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Created: ${doc.created.toString()}'),
-            Text('Modified: ${doc.modified.toString()}'),
+            Text('Created: ${doc.created}'),
+            Text('Modified: ${doc.modified}'),
           ],
         ),
         trailing: PopupMenuButton<String>(
@@ -143,13 +198,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('f.Sentence'),
-        centerTitle: true,
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -180,9 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ListTile(
               leading: Icon(Icons.folder),
               title: Text('Your documents'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+              onTap: () => Navigator.pop(context),
             ),
             ListTile(
               leading: Icon(Icons.star),
