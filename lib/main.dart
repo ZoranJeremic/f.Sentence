@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
             ),
       ),
       darkTheme: ThemeData(
-        useMaterial3: true,
+        useMaterial3: false,
         brightness: Brightness.dark,
         colorScheme: ColorScheme(
           brightness: Brightness.dark,
