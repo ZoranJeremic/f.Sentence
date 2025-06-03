@@ -2,13 +2,17 @@
 *Pronounced without dot*
 ![ic_launcher](https://github.com/user-attachments/assets/094cf8ce-40c3-4105-9948-02e25955561a)
 
-f.Sentence is ultra-powerful text editor, note taking and PDF editor and reader app with intuitive Material You 3 design. It's made with Dart and Flutter. 
+f.Sentence isn't only a text editor - it is an app for creatives, students and people who want to get work done efficiently. 
+
+It provides with lots of features - from most basic ones, like creating documents, to the most advanced ones, like mind-mapping or PDF annotation. 
 
 App is 100% FOSS with no ads or in-app purchases.
 
 # Development status
 
-Currently in early development. Updates will follow. Release date will be somewhere around July 2025. Current builds support Android 5 Lollipop and later.
+Currently in early development. Updates will follow. Release date will be somewhere around July 2025. 
+
+Current builds support Android 5 Lollipop and later.
 
 # Upcoming features
 
