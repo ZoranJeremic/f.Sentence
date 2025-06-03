@@ -13,14 +13,14 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(  
             useMaterial3: true,  
             colorScheme: lightColorScheme ?? ColorScheme.fromSeed(  
-              seedColor: Colors.orange,  
+              seedColor: Colors.Orange,  
               brightness: Brightness.light,  
             ),  
           ),  
           darkTheme: ThemeData(  
             useMaterial3: true,  
             colorScheme: darkColorScheme ?? ColorScheme.fromSeed(  
-              seedColor: orange,  
+              seedColor: Orange,  
               brightness: Brightness.dark,  
             ),  
           ),  
