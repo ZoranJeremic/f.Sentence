@@ -13,14 +13,14 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(  
             useMaterial3: true,  
             colorScheme: lightColorScheme ?? ColorScheme.fromSeed(  
-              seedColor: Colors.deepPurple,  
+              seedColor: Colors.orange,  
               brightness: Brightness.light,  
             ),  
           ),  
           darkTheme: ThemeData(  
             useMaterial3: true,  
             colorScheme: darkColorScheme ?? ColorScheme.fromSeed(  
-              seedColor: Colors.deepPurple,  
+              seedColor: orange,  
               brightness: Brightness.dark,  
             ),  
           ),  
@@ -51,12 +51,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {  
   List<Document> documents = [  
     Document(  
-      title: 'First Document',  
+      title: 'Placeholder document N⁰.1',  
       created: DateTime(2024, 5, 1, 14, 0),  
       modified: DateTime(2024, 5, 10, 16, 30),  
     ),  
     Document(  
-      title: 'Second Document',  
+      title: 'Placeholder document N⁰.2',  
       created: DateTime(2024, 5, 2, 9, 45),  
       modified: DateTime(2024, 5, 11, 10, 15),  
     ),  
@@ -70,7 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [  
           ListTile(leading: Icon(Icons.note_add), title: Text('New note')),  
           ListTile(leading: Icon(Icons.picture_as_pdf), title: Text('Open PDF')),  
-          ListTile(leading: Icon(Icons.draw), title: Text('New drawing')),  
+          ListTile(leading: Icon(Icons.draw), title: Text('New drawing')),
+          ListTile(title: Text('New drawing'))  
         ],  
       ),  
     );  
@@ -130,7 +131,9 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (context) => [  
             PopupMenuItem(value: 'delete', child: Text('Delete')),  
             PopupMenuItem(value: 'archive', child: Text('Archive')),  
-            PopupMenuItem(value: 'share', child: Text('Share')),  
+            PopupMenuItem(value: 'share', child: Text('Share')),
+            PopupMenuItem(value: 'rename',
+child: Text('Rename')),  
           ],  
         ),  
       ),  
@@ -143,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(  
       appBar: AppBar(  
         title: Text('f.Sentence'),  
-        centerTitle: true,  
+        centerTitle: false,  
         leading: Builder(  
           builder: (context) => IconButton(  
             icon: Icon(Icons.menu),  
