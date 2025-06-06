@@ -140,7 +140,7 @@ class _MainHomeState extends State<MainHome> {
           );
         },
       ),
-      body: Center(child: Text("Your drawings, PDFs and documents will appear here after you create or edit them.")),
+      body: Center(child: Text("Your created and edited files will appear here.")),
     );
   }
 }
