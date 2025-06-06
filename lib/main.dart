@@ -38,7 +38,6 @@ class _MainHomeState extends State<MainHome> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              // Otvaranje pretrage
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => SearchBarWidget()),
@@ -97,7 +96,7 @@ class _MainHomeState extends State<MainHome> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          // Možeš da koristiš isti meni kao gore
+          // idk
           showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
@@ -142,7 +141,7 @@ class _MainHomeState extends State<MainHome> {
           );
         },
       ),
-      body: Center(child: Text("Dobrodošao u f.Sentence")),
+      body: Center(child: Text("Welcome to f.Sentence!")),
     );
   }
 }
