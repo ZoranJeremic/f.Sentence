@@ -141,7 +141,7 @@ class _MainHomeState extends State<MainHome> {
           );
         },
       ),
-      body: Center(child: Text("Welcome to f.Sentence!")),
+      body: Center(child: Text("Your drawings, PDFs and documents will appear here after you create or edit them.")),
     );
   }
 }
