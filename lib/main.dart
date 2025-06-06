@@ -76,8 +76,7 @@ class _MainHomeState extends State<MainHome> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              child: Text('f.Sentence', style: TextStyle(fontSize: 24, color: Colors.white)),
-              decoration: BoxDecoration(color: Colors.orange),
+              child: Text('f.Sentence', style: TextStyle(fontSize: 24, color: Colors.black)),
             ),
             ListTile(
               leading: Icon(Icons.folder),
