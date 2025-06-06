@@ -5,7 +5,7 @@ class DrawingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Drawing')),
-      body: Center(child: Text('Drawing screen here')),
+      body: Center(child: Text('Drawings are coming soon!')),
     );
   }
 }
