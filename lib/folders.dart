@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class PDFScreen extends StatelessWidget {
+class FoldersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('PDF')),
-      body: Center(child: Text('PDF screen here')),
+      appBar: AppBar(title: Text('Folders')),
+      body: Center(child: Text('Folders are coming soon!')),
     );
   }
 }
