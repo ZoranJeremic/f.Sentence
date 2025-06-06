@@ -94,7 +94,6 @@ class _MainHomeState extends State<MainHome> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        title: Text('Create'),
         onPressed: () {
           // idk
           showModalBottomSheet(
