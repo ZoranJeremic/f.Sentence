@@ -12,7 +12,7 @@ App is 100% FOSS with no ads or in-app purchases.
 
 Currently in early development. Updates will follow. Release date will be somewhere around July 2025. 
 
-Current builds support Android 5 Lollipop and later.
+Current builds support Android 10 and later.
 
 # Upcoming features
 
