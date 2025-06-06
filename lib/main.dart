@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ListTile(leading: Icon(Icons.note_add), title: Text('New note')),  
           ListTile(leading: Icon(Icons.picture_as_pdf), title: Text('Open PDF')),  
           ListTile(leading: Icon(Icons.draw), title: Text('New drawing')),
-          ListTile(title: Text('New drawing'))  
+          ListTile(leading: Icon(Icons.description), title: Text('New document')), 
         ],  
       ),  
     );  
