@@ -1,7 +1,7 @@
 // Primer za 'favorites.dart'
 import 'package:flutter/material.dart';
 
-class FavoritesScreen extends StatelessWidget { // Pazi da je ime klase ispravno (npr. FavoritesScreen)
+class PDFScreen extends StatelessWidget { // Pazi da je ime klase ispravno (npr. FavoritesScreen)
   const FavoritesScreen({super.key}); // OVDE DODAJ const
 
   @override
