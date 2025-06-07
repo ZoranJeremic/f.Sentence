@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ArchiveScreen extends StatelessWidget {
+class ArchiveScreen extends StatelessWidget { 
+  const FavoritesScreen({super.key}); 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Archive')),
-      body: Center(child: Text('Archive is coming soon!')),
+      appBar: AppBar(
+        title: const Text('Archive'),
+      ),
+      body: const Center(child: Text('Archive is coming soon!')),
     );
   }
 }
