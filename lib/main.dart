@@ -1,146 +1,166 @@
 import 'package:flutter/material.dart';
-import 'drawing.dart';
-import 'folders.dart';
-import 'notes_screen.dart';
-import 'pdf.dart';
-import 'search_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
+import 'package:dynamic_color/dynamic_color.dart';
 
 void main() {
-  runApp(SentenceApp());
+  runApp(const SentenceApp());
 }
 
 class SentenceApp extends StatelessWidget {
+  const SentenceApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'f.Sentence',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        useMaterial3: true,
-      ),
-      home: MainHome(),
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        return MaterialApp(
+          title: 'f.Sentence',
+          theme: ThemeData(
+            colorScheme: lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.orange),
+            useMaterial3: true,
+          ),
+          darkTheme: ThemeData(
+            colorScheme: darkDynamic ?? ColorScheme.fromSeed(seedColor: Colors.orange, brightness: Brightness.dark),
+            useMaterial3: true,
+          ),
+          themeMode: ThemeMode.system,
+          home: const LaunchScreen(),
+        );
+      },
     );
   }
 }
 
-class MainHome extends StatefulWidget {
+class LaunchScreen extends StatefulWidget {
+  const LaunchScreen({super.key});
+
   @override
-  _MainHomeState createState() => _MainHomeState();
+  State<LaunchScreen> createState() => _LaunchScreenState();
 }
 
-class _MainHomeState extends State<MainHome> {
+class _LaunchScreenState extends State<LaunchScreen> {
+  bool _loading = true;
+  bool _isFirstLaunch = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstLaunch();
+  }
+
+  Future<void> _checkFirstLaunch() async {
+    final prefs = await SharedPreferences.getInstance();
+    _isFirstLaunch = prefs.getBool('first_launch') ?? true;
+
+    if (_isFirstLaunch) {
+      await prefs.setBool('first_launch', false);
+      await Future.delayed(const Duration(seconds: 2)); // animacija dobrodošlice
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+        );
+      }
+    } else {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const EditorScreen()),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(), // dok proverava da li je prvi put
+      ),
+    );
+  }
+}
+
+class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Dobrodošao u f.Sentence!',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Tvoja lična aplikacija za beleške, dokumente i kreativnost. Počni odmah!',
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              FilledButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const EditorScreen()),
+                  );
+                },
+                child: const Text('Počni'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EditorScreen extends StatefulWidget {
+  const EditorScreen({super.key});
+
+  @override
+  State<EditorScreen> createState() => _EditorScreenState();
+}
+
+class _EditorScreenState extends State<EditorScreen> {
+  final QuillController _controller = QuillController.basic();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('f.Sentence'),
+        title: const Text('Novi dokument'),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.save),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SearchBarWidget()),
+              // TODO: Sačuvaj dokument (npr. kao JSON ili .docx)
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Dokument sačuvan!')),
               );
             },
-          ),
-          PopupMenuButton<String>(
-            onSelected: (String value) {
-              if (value == 'New note') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => NotesScreen()),
-                );
-              } else if (value == 'New drawing') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DrawingScreen()),
-                );
-              } else if (value == 'Open PDF') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PDFScreen()),
-                );
-              }
-            },
-            itemBuilder: (BuildContext context) => [
-              PopupMenuItem(value: 'New note', child: Text('New note')),
-              PopupMenuItem(value: 'New drawing', child: Text('New drawing')),
-              PopupMenuItem(value: 'Open PDF', child: Text('Open PDF')),
-            ],
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: Text('f.Sentence', style: TextStyle(fontSize: 24, color: Colors.black)),
+      body: Column(
+        children: [
+          QuillToolbar.simple(controller: _controller),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: QuillEditor.basic(
+                controller: _controller,
+                readOnly: false,
+              ),
             ),
-            ListTile(
-              leading: Icon(Icons.folder),
-              title: Text('Folders'),
-              onTap: () {
-                Navigator.pop(context); // Zatvori drawer
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FoldersScreen()),
-                );
-              },
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          // idk
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return Wrap(
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.note_add),
-                    title: Text('New note'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => NotesScreen()),
-                      );
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.brush),
-                    title: Text('New drawing'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => DrawingScreen()),
-                      );
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.picture_as_pdf),
-                    title: Text('Open PDF'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PDFScreen()),
-                      );
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        },
-      ),
-      body: Center(child: Text("Your created and edited files will appear here.")),
     );
   }
 }
