@@ -1,16 +1,15 @@
-// Primer za 'favorites.dart'
 import 'package:flutter/material.dart';
 
-class DrawingScreen extends StatelessWidget {
-  const FavoritesScreen({super.key}); 
+class DrawingScreen extends StatelessWidget { // Ime klase je DrawingScreen
+  const DrawingScreen({super.key}); // Konstruktor se zove kao klasa!
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Drawings'), 
+        title: const Text('New Drawing'), // Obavezno const
       ),
-      body: const Center(child: Text('Drawings are coming soon!')),
+      body: const Center(child: Text('Drawing Canvas Here')), // Obavezno const
     );
   }
 }
