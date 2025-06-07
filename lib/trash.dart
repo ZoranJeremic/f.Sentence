@@ -1,16 +1,15 @@
-// Primer za 'favorites.dart'
 import 'package:flutter/material.dart';
 
-class TrashScreen extends StatelessWidget { // Pazi da je ime klase ispravno (npr. FavoritesScreen)
-  const FavoritesScreen({super.key}); // OVDE DODAJ const
+class TrashScreen extends StatelessWidget {
+  const TrashScreen({super.key}); // Konstruktor se zove kao klasa!
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favorites'), // OVDE DODAJ const
+        title: const Text('Trash'), // Obavezno const
       ),
-      body: const Center(child: Text('Favorites are coming soon!')), // OVDE DODAJ const
+      body: const Center(child: Text('Trash Screen Content')), // Obavezno const
     );
   }
 }
