@@ -1,11 +1,16 @@
+// Primer za 'favorites.dart'
 import 'package:flutter/material.dart';
 
-class FoldersScreen extends StatelessWidget {
+class FoldersScreen extends StatelessWidget { // Pazi da je ime klase ispravno (npr. FavoritesScreen)
+  const FavoritesScreen({super.key}); // OVDE DODAJ const
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Folders')),
-      body: Center(child: Text('Folders are coming soon!')),
+      appBar: AppBar(
+        title: const Text('Favorites'), // OVDE DODAJ const
+      ),
+      body: const Center(child: Text('Favorites are coming soon!')), // OVDE DODAJ const
     );
   }
 }
