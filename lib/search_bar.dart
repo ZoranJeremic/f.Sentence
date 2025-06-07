@@ -1,11 +1,16 @@
+// Primer za 'favorites.dart'
 import 'package:flutter/material.dart';
 
-class SearchBarWidget extends StatelessWidget {
+class SearchBarWidget extends StatelessWidget { // Pazi da je ime klase ispravno (npr. FavoritesScreen)
+  const FavoritesScreen({super.key}); // OVDE DODAJ const
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Search')),
-      body: Center(child: Text('Search screen coming soon!')),
+      appBar: AppBar(
+        title: const Text('Favorites'), // OVDE DODAJ const
+      ),
+      body: const Center(child: Text('Favorites are coming soon!')), // OVDE DODAJ const
     );
   }
 }
