@@ -3,17 +3,15 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:file_picker/file_picker.dart';
-
-// Ispravljene putanje za import fajlove (pretpostavka da su SVI fajlovi direktno u lib folderu)
 import 'archive.dart';
 import 'favorites.dart';
 import 'folders.dart';
 import 'settings.dart';
 import 'trash.dart';
-import 'search_bar.dart'; // Npr. klasa SearchBarWidget
-import 'notes_screen.dart'; // Npr. klasa NotesScreen
-import 'drawing.dart'; // Npr. klasa DrawingScreen
-import 'pdf.dart'; // Npr. klasa PdfScreen
+import 'search_bar.dart';
+import 'notes_screen.dart';
+import 'drawing.dart';
+import 'pdf.dart';
 
 
 void main() {
@@ -56,7 +54,7 @@ class SplashScreenWrapper extends StatefulWidget {
 
 class _SplashScreenWrapperState extends State<SplashScreenWrapper> {
   bool _isLoading = true;
-  bool _isFirstLaunch = true; // Pretpostavljamo da je prvo pokretanje dok ne proverimo
+  bool _isFirstLaunch = true;
 
   @override
   void initState() {
@@ -66,46 +64,41 @@ class _SplashScreenWrapperState extends State<SplashScreenWrapper> {
 
   Future<void> _checkFirstLaunch() async {
     final prefs = await SharedPreferences.getInstance();
-    // Ako 'isFirstLaunch' nije postavljen, podrazumeva se true
     _isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
 
     setState(() {
-      _isLoading = false; // Gotovo učitavanje, UI može da se prikaže
+      _isLoading = false;
     });
   }
 
   Future<void> _setFirstLaunchToFalse() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isFirstLaunch', false); // Snimi da nije više prvo pokretanje
+    await prefs.setBool('isFirstLaunch', false);
     setState(() {
-      _isFirstLaunch = false; // Ažuriraj stanje UI
+      _isFirstLaunch = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      // Prikazuje se indikator dok se učitava stanje iz SharedPreferences
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
       );
     } else if (_isFirstLaunch) {
-      // Ako je prvo pokretanje, prikaži Welcome Screen
       return WelcomeScreen(
-        onBegin: _setFirstLaunchToFalse, // Prosleđujemo callback funkciju
+        onBegin: _setFirstLaunchToFalse,
       );
     } else {
-      // Ako nije prvo pokretanje, prikaži Home Screen
       return const HomeScreen();
     }
   }
 }
 
-// Welcome Screen (prikazuje se samo pri prvom pokretanju aplikacije)
 class WelcomeScreen extends StatelessWidget {
-  final VoidCallback onBegin; // Callback koji se poziva kada se pritisne 'Begin' dugme
+  final VoidCallback onBegin;
 
   const WelcomeScreen({super.key, required this.onBegin});
 
@@ -118,12 +111,6 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Prikaz ikonice aplikacije (mora biti u assets/images folderu i definisana u pubspec.yaml)
-              Image.asset(
-                'lib/assets/images/ic_launcher.png', // PROVERI OVU PUTANJU: ako si koristio flutter_launcher_icons bez kopiranja, ovo možda neće raditi.
-                width: 150,
-                height: 150,
-              ),
               const SizedBox(height: 30),
               Text(
                 'Welcome to f.Sentence!',
@@ -137,21 +124,19 @@ class WelcomeScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 50),
-              // Izbornik za jezik (trenutno samo 'English')
               DropdownButton<String>(
                 value: 'English',
                 items: const [
                   DropdownMenuItem(value: 'English', child: Text('English')),
                 ],
                 onChanged: (String? newValue) {
-                  // Ovde ide logika za promenu jezika
                 },
               ),
               const SizedBox(height: 50),
               Align(
                 alignment: Alignment.bottomRight,
                 child: ElevatedButton.icon(
-                  onPressed: onBegin, // Poziva _setFirstLaunchToFalse iz SplashScreenWrappera
+                  onPressed: onBegin,
                   icon: const Icon(Icons.arrow_forward),
                   label: const Text('Begin'),
                   style: ElevatedButton.styleFrom(
@@ -170,7 +155,6 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
-// Home Screen - Glavni ekran aplikacije
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -179,26 +163,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Lista dummy dokumenata za prikaz
   final List<String> _documents = [];
 
-  // Funkcija za otvaranje File Pickera
   Future<void> _openFilePicker() async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
       if (result != null) {
-        // Korisnik je izabrao fajl, obradi ga ovde
         PlatformFile file = result.files.first;
-        print('Izabran fajl: ${file.name}, Putanja: ${file.path}');
-        // Ovde bi dodao logiku za učitavanje fajla u aplikaciju
+        print('Selected file: ${file.name}, file path: ${file.path}');
       } else {
-        // Korisnik je otkazao biranje fajla
-        print('Korisnik je otkazao biranje fajla.');
+        print('Deletion cancelled.');
       }
     } catch (e) {
-      print('Greška pri otvaranju file pickera: $e');
-      // Prikazati korisniku neku poruku o grešci
+      print('Error while opening file picker: $e');
     }
   }
 
@@ -207,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('f.Sentence', textAlign: TextAlign.center),
-        centerTitle: true, // Centriranje naslova u AppBaru
+        centerTitle: true, 
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
@@ -220,19 +198,19 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      drawer: Drawer( // Hamburger meni
+      drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary, // Koristi primarnu boju teme
+                color: Theme.of(context).colorScheme.primary,
               ),
-              child: Center( // Centriranje teksta u headeru
+              child: Center(
                 child: Text(
                   'f.Sentence',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary, // Boja teksta koja se dobro vidi na primarnoj boji
+                    color: Theme.of(context).colorScheme.onPrimary, 
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
@@ -243,10 +221,10 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.folder),
               title: const Text('Folders'),
               onTap: () {
-                Navigator.pop(context); // Zatvori drawer
+                Navigator.pop(context); 
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const FolderScreen()), // Navigacija do FolderScreen
+                  MaterialPageRoute(builder: (context) => const FolderScreen()), 
                 );
               },
             ),
@@ -257,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const FavoritesScreen()), // Navigacija do FavoritesScreen
+                  MaterialPageRoute(builder: (context) => const FavoritesScreen()), 
                 );
               },
             ),
@@ -277,9 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Storage'),
               onTap: () {
                 Navigator.pop(context);
-                // Ovde bi trebalo implementirati otvaranje file managera sistema
-                // Za ovo ti treba neka platform-specific implementacija ili paket kao 'open_filex'
-                print('Otvaranje File Managera...');
+                print('Opening File Manager...');
               },
             ),
             ListTile(
@@ -289,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TrashScreen()), // Navigacija do TrashScreen
+                  MaterialPageRoute(builder: (context) => const TrashScreen()),
                 );
               },
             ),
@@ -307,15 +283,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: _documents.isEmpty // Uslovni prikaz sadržaja
-          ? const Center( // Ako nema dokumenata
+      body: _documents.isEmpty
+          ? const Center(
               child: Text(
                 'Your creations will show up here',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
             )
-          : Column( // Ako ima dokumenata
+          : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -331,13 +307,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       final docName = _documents[index];
                       return ListTile(
-                        leading: const Icon(Icons.insert_drive_file), // Ikona za prikaz fajla
-                        title: Text(docName), // Ime fajla
-                        subtitle: const Text('Created: 2025-06-07'), // Placeholder datum
-                        trailing: IconButton( // Meni sa tri tačkice
+                        leading: const Icon(Icons.insert_drive_file),
+                        title: Text(docName), 
+                        subtitle: const Text('Created: 2025-06-07'), 
+                        trailing: IconButton( 
                           icon: const Icon(Icons.more_vert),
                           onPressed: () {
-                            _showFileOptions(context, docName); // Poziva opcije za fajl
+                            _showFileOptions(context, docName); 
                           },
                         ),
                       );
@@ -346,11 +322,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-      floatingActionButton: SpeedDial( // Glavni FAB sa pod-opcijama
-        icon: Icons.add, // Ikona za glavni FAB
-        activeIcon: Icons.close, // Ikona kada je FAB otvoren
-        spacing: 10, // Razmak između glavnog FAB-a i pod-opcija
-        spaceBetweenChildren: 8, // Razmak između pod-opcija
+      floatingActionButton: SpeedDial(
+        icon: Icons.add,
+        activeIcon: Icons.close,
+        spacing: 10,
+        spaceBetweenChildren: 8,
         children: [
           SpeedDialChild(
             child: const Icon(Icons.note_add),
@@ -369,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               print('New document created');
               setState(() {
-                _documents.add('New Document ${DateTime.now().second}'); // Dodaje dummy dokument u listu
+                _documents.add('New Document ${DateTime.now().second}'); 
               });
             },
           ),
@@ -391,7 +367,7 @@ class _HomeScreenState extends State<HomeScreen> {
               print('Annotate PDF');
                Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const PdfScreen()), // Navigacija do PdfScreen
+                MaterialPageRoute(builder: (context) => const PdfScreen()), 
               );
             },
           ),
@@ -400,7 +376,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: 'Open from storage',
             onTap: () {
               print('Open from storage');
-              _openFilePicker(); // Poziva funkciju za otvaranje file pickera
+              _openFilePicker(); 
             },
           ),
         ],
@@ -408,21 +384,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Prikaz opcija za fajl (share, delete, rename, archive)
   void _showFileOptions(BuildContext context, String fileName) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext bc) {
-        return SafeArea( // Za sigurno područje na dnu ekrana
-          child: Wrap( // Omotava listu opcija
+        return SafeArea(
+          child: Wrap(
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.share),
                 title: const Text('Share'),
                 onTap: () {
                   Navigator.pop(bc);
-                  print('Deljenje fajla: $fileName');
-                  // Ovde bi koristio paket share_plus za deljenje
+                  print('Sharing $fileName');
                 },
               ),
               ListTile(
@@ -430,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: const Text('Delete'),
                 onTap: () {
                   Navigator.pop(bc);
-                  _confirmDelete(context, fileName); // Poziva dijalog za potvrdu brisanja
+                  _confirmDelete(context, fileName); 
                 },
               ),
               ListTile(
@@ -438,7 +412,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: const Text('Rename'),
                 onTap: () {
                   Navigator.pop(bc);
-                  _renameFile(context, fileName); // Poziva dijalog za preimenovanje
+                  _renameFile(context, fileName); 
                 },
               ),
               ListTile(
@@ -446,7 +420,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 title: const Text('Archive'),
                 onTap: () {
                   Navigator.pop(bc);
-                  _confirmArchive(context, fileName); // Poziva dijalog za potvrdu arhiviranja
+                  _confirmArchive(context, fileName);
                 },
               ),
             ],
@@ -455,8 +429,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-
-  // Dijalog za potvrdu brisanja fajla
   void _confirmDelete(BuildContext context, String fileName) {
     showDialog(
       context: context,
@@ -476,9 +448,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
-                  _documents.remove(fileName); // Ukloni fajl iz liste
-                  // Ovde dodaj stvarnu logiku premeštanja fajla u Trash
-                  print('Fajl "$fileName" prebačen u Trash');
+                  _documents.remove(fileName); 
+                  print('File "$fileName" moved to Trash');
                 });
               },
             ),
@@ -488,7 +459,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Dijalog za preimenovanje fajla
   void _renameFile(BuildContext context, String oldFileName) {
     TextEditingController _renameController = TextEditingController(text: oldFileName);
     showDialog(
@@ -517,8 +487,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     int index = _documents.indexOf(oldFileName);
                     if (index != -1) {
                       _documents[index] = newFileName; // Ažuriraj ime fajla u listi
-                      print('Fajl "$oldFileName" preimenovan u "$newFileName"');
-                      // Ovde dodaj stvarnu logiku preimenovanja fajla na disku
+                      print('File "$oldFileName" renamed to "$newFileName"');
                     }
                   });
                 }
@@ -529,8 +498,6 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
-
-  // Dijalog za potvrdu arhiviranja fajla
   void _confirmArchive(BuildContext context, String fileName) {
     showDialog(
       context: context,
@@ -550,9 +517,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
-                  _documents.remove(fileName); // Ukloni fajl iz liste
-                  // Ovde dodaj stvarnu logiku premeštanja fajla u Archive
-                  print('Fajl "$fileName" prebačen u Archive');
+                  _documents.remove(fileName);
+                  print('File "$fileName" moved to Archive');
                 });
               },
             ),
