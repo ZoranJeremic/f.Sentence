@@ -1,145 +1,155 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
+import 'package:dynamic_color/dynamic_color.dart';
+import 'welcome_screen.dart';
+import 'folders.dart';
+import 'favorites.dart';
+import 'settings.dart';
+import 'trash.dart';
+import 'archive.dart';
+import 'search_bar.dart';
 
-void main() {
-  runApp(const SentenceApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+
+  runApp(MyApp(isFirstLaunch: isFirstLaunch));
 }
 
-class SentenceApp extends StatelessWidget {
-  const SentenceApp({super.key});
+class MyApp extends StatelessWidget {
+  final bool isFirstLaunch;
+
+  const MyApp({super.key, required this.isFirstLaunch});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'f.Sentence',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.orange,
-        brightness: Brightness.light,
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.orange,
-        brightness: Brightness.dark,
-      ),
-      home: const SplashScreen(),
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+        return MaterialApp(
+          title: 'f.Sentence',
+          theme: ThemeData(
+            colorScheme: lightDynamic ?? ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+            useMaterial3: true,
+          ),
+          darkTheme: ThemeData(
+            colorScheme: darkDynamic ?? ColorScheme.fromSeed(seedColor: Colors.deepOrange, brightness: Brightness.dark),
+            useMaterial3: true,
+          ),
+          themeMode: ThemeMode.system,
+          home: isFirstLaunch ? const WelcomeScreen() : const HomePage(),
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _checkFirstLaunch();
-  }
-
-  Future<void> _checkFirstLaunch() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
-
-    if (isFirstLaunch) {
-      await prefs.setBool('isFirstLaunch', false);
-      _navigateTo(const WelcomeScreen());
-    } else {
-      _navigateTo(const EditorScreen());
-    }
-  }
-
-  void _navigateTo(Widget screen) {
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => screen),
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'f.Sentence',
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
-}
-
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
-
-  void _continue(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const EditorScreen()),
-    );
-  }
+class _HomePageState extends State<HomePage> {
+  bool hasDocuments = false; // Placeholder, kasnije dinamički
+  int fileCount = 0; // Broj fajlova (dummy za sad)
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Welcome!')),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => _continue(context),
-          child: const Text('Start using f.Sentence'),
-        ),
-      ),
-    );
-  }
-}
-
-class EditorScreen extends StatefulWidget {
-  const EditorScreen({super.key});
-
-  @override
-  State<EditorScreen> createState() => _EditorScreenState();
-}
-
-class _EditorScreenState extends State<EditorScreen> {
-  final quill.QuillController _controller = quill.QuillController.basic();
-  final FocusNode _focusNode = FocusNode();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Editor')),
-      body: Column(
-        children: [
-          quill.QuillToolbar.basic(controller: _controller),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: quill.QuillEditor(
-                controller: _controller,
-                scrollController: ScrollController(),
-                scrollable: true,
-                focusNode: _focusNode,
-                autoFocus: true,
-                readOnly: false,
-                expands: true,
-                padding: const EdgeInsets.all(8),
+      drawer: Drawer(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const DrawerHeader(
+                child: Center(
+                  child: Text(
+                    'f.Sentence',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-            ),
+              ListTile(
+                leading: const Icon(Icons.folder),
+                title: const Text('Folders'),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FolderScreen())),
+              ),
+              ListTile(
+                leading: const Icon(Icons.star),
+                title: const Text('Favorites'),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const FavoritesScreen())),
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Settings'),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen())),
+              ),
+              ListTile(
+                leading: const Icon(Icons.storage),
+                title: const Text('Storage'),
+                onTap: () {
+                  // TODO: Dodati logiku za otvaranje File Explorer-a zavisno od OS-a
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text('Trash'),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TrashScreen())),
+              ),
+              ListTile(
+                leading: const Icon(Icons.archive),
+                title: const Text('Archive'),
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ArchiveScreen())),
+              ),
+            ],
+          ),
+        ),
+      ),
+      appBar: AppBar(
+        title: const Text(
+          'f.Sentence',
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const SearchBarWidget()));
+            },
           ),
         ],
       ),
+      body: hasDocuments ? _buildFileList() : _buildEmptyState(),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return const Center(
+      child: Text(
+        'Your creations will show up here',
+        style: TextStyle(fontSize: 16),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Widget _buildFileList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text(
+            '$fileCount files on your device',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ),
+        // TODO: Dodati ListView za fajlove
+      ],
     );
   }
 }
