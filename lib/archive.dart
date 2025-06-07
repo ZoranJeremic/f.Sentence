@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class FoldersScreen extends StatelessWidget {
+class ArchiveScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
