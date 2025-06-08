@@ -38,6 +38,7 @@ add_executable(${BINARY_NAME}
   "flutter_window.h"
   "utils.cpp"
   "utils.h"
+  "runner/resources.rc"
 )
 
 # Link the Flutter engine and libraries
