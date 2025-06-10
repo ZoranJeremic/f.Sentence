@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(f_sentence)
+project(f_sentence LANGUAGES CXX)
 
-set(BUILD_WINDOWS TRUE)
-
+# Ručno definiši flutter dir ako ne koristiš standardnu putanju
 set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
 
-include(${FLUTTER_SOURCE_DIR}/packages/flutter_tools/bin/utils.cmake)
+# Uključi pluginove
+if(EXISTS "${FLUTTER_MANAGED_DIR}/generated_plugins.cmake")
+  include("${FLUTTER_MANAGED_DIR}/generated_plugins.cmake")
+endif()
 
-include("${FLUTTER_MANAGED_DIR}/generated_plugins.cmake")
-
+# Dodaj folder za build aplikacije
 add_subdirectory("runner")
