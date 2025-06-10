@@ -1,0 +1,5 @@
+name: fake_dynamic_color
+description: Fake replacement for dynamic_color on Windows.
+version: 1.0.0
+environment:
+  sdk: ">=2.17.0 <4.0.0"
