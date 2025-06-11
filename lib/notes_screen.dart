@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'dart:convert';
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
@@ -13,8 +14,15 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  final quill.QuillController _controller = quill.QuillController.basic();
+  late QuillController _controller;
   final FocusNode _focusNode = FocusNode();
+  final ImagePicker _imagePicker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = QuillController.basic();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,28 +44,51 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: Column(
         children: [
-          quill.QuillToolbar.basic(
+          QuillToolbar(
             controller: _controller,
-            multiRowsDisplay: false,
-            toolbarIconAlignment: WrapAlignment.start,
-            showUndo: true,
-            showRedo: true,
-            showBoldButton: true,
-            showItalicButton: true,
-            showUnderLineButton: true,
-            showFontSize: true,
-            showListNumbers: true,
-            showListBullets: true,
-            showImageButton: true,
-            showColorButton: true,
-            showBackgroundColorButton: true,
-            showHeaderStyle: true,
-            onImagePickCallback: _onImagePickCallback,
+            children: [
+              UndoButton(controller: _controller),
+              RedoButton(controller: _controller),
+              ToggleStyleButton(
+                attribute: Attribute.bold,
+                icon: Icons.format_bold,
+                controller: _controller,
+              ),
+              ToggleStyleButton(
+                attribute: Attribute.italic,
+                icon: Icons.format_italic,
+                controller: _controller,
+              ),
+              ToggleStyleButton(
+                attribute: Attribute.underline,
+                icon: Icons.format_underline,
+                controller: _controller,
+              ),
+              SelectHeaderStyleButton(controller: _controller),
+              SelectFontSizeButton(controller: _controller),
+              ColorButton(
+                icon: Icons.format_color_text,
+                background: false,
+                controller: _controller,
+              ),
+              ColorButton(
+                icon: Icons.format_color_fill,
+                background: true,
+                controller: _controller,
+              ),
+              ImageButton(
+                controller: _controller,
+                imageSource: ImageSource.gallery,
+                onImagePickCallback: _onImagePickCallback,
+              ),
+              ListNumbersButton(controller: _controller),
+              ListBulletsButton(controller: _controller),
+            ],
           ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: quill.QuillEditor(
+              child: QuillEditor(
                 controller: _controller,
                 scrollController: ScrollController(),
                 scrollable: true,
@@ -75,7 +106,9 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   Future<String> _onImagePickCallback(File file) async {
-    return file.path;
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final copiedFile = await file.copy('${appDocDir.path}/${file.path.split('/').last}');
+    return copiedFile.path;
   }
 
   void _saveNoteWithDialog() async {
@@ -135,9 +168,9 @@ class _NotesScreenState extends State<NotesScreen> {
       try {
         String content = await file.readAsString();
         var json = jsonDecode(content);
-        var doc = quill.Document.fromJson(json);
+        var doc = Document.fromJson(json);
         setState(() {
-          _controller.document = doc;
+          _controller = QuillController(document: doc, selection: const TextSelection.collapsed(offset: 0));
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Note loaded!')),
