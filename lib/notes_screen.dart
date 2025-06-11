@@ -3,6 +3,7 @@ import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({super.key});
@@ -22,30 +23,36 @@ class _NotesScreenState extends State<NotesScreen> {
         title: const Text('New note'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.folder_open),
+            onPressed: _openNote,
+            tooltip: 'Open note',
+          ),
+          IconButton(
             icon: const Icon(Icons.save),
-            onPressed: _saveNote,
+            onPressed: _saveNoteWithDialog,
             tooltip: 'Save note',
-          )
+          ),
         ],
       ),
       body: Column(
         children: [
-          quill.QuillToolbar(
+          quill.QuillToolbar.basic(
             controller: _controller,
             multiRowsDisplay: false,
-            children: [
-              const quill.HistoryButton(isUndo: true),
-              const quill.HistoryButton(isUndo: false),
-              const quill.BoldButton(),
-              const quill.ItalicButton(),
-              const quill.UnderlineButton(),
-              const quill.FontSizeButton(),
-              const quill.ListNumbersButton(),
-              const quill.ListBulletsButton(),
-              quill.ImageButton(
-                onImagePickCallback: _onImagePickCallback,
-              ),
-            ],
+            toolbarIconAlignment: WrapAlignment.start,
+            showUndo: true,
+            showRedo: true,
+            showBoldButton: true,
+            showItalicButton: true,
+            showUnderLineButton: true,
+            showFontSize: true,
+            showListNumbers: true,
+            showListBullets: true,
+            showImageButton: true,
+            showColorButton: true,
+            showBackgroundColorButton: true,
+            showHeaderStyle: true,
+            onImagePickCallback: _onImagePickCallback,
           ),
           Expanded(
             child: Padding(
@@ -67,12 +74,79 @@ class _NotesScreenState extends State<NotesScreen> {
     );
   }
 
-  void _saveNote() {
-    final jsonContent = jsonEncode(_controller.document.toDelta().toJson());
-    Navigator.pop(context, jsonContent);
-  }
-
   Future<String> _onImagePickCallback(File file) async {
     return file.path;
+  }
+
+  void _saveNoteWithDialog() async {
+    String? fileName = await _askForNoteName();
+    if (fileName == null || fileName.trim().isEmpty) return;
+
+    String jsonContent = jsonEncode(_controller.document.toDelta().toJson());
+    Directory dir = await getApplicationDocumentsDirectory();
+    String path = '${dir.path}/$fileName.json';
+    File file = File(path);
+
+    await file.writeAsString(jsonContent);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Note saved as "$fileName.json"')),
+      );
+      Navigator.pop(context, jsonContent);
+    }
+  }
+
+  Future<String?> _askForNoteName() async {
+    String noteName = '';
+    return showDialog<String>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Save note as...'),
+          content: TextField(
+            autofocus: true,
+            onChanged: (value) => noteName = value,
+            decoration: const InputDecoration(hintText: 'Enter note name'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(null),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(noteName),
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _openNote() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      File file = File(result.files.single.path!);
+      try {
+        String content = await file.readAsString();
+        var json = jsonDecode(content);
+        var doc = quill.Document.fromJson(json);
+        setState(() {
+          _controller.document = doc;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Note loaded!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to load note')),
+        );
+      }
+    }
   }
 }
