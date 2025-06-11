@@ -13,6 +13,7 @@ class NotesScreen extends StatefulWidget {
 
 class _NotesScreenState extends State<NotesScreen> {
   final quill.QuillController _controller = quill.QuillController.basic();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -29,35 +30,35 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: Column(
         children: [
-          // Toolbar sa svim bitnim opcijama
-          quill.QuillToolbar.basic(
+          quill.QuillToolbar(
             controller: _controller,
-            showAlignmentButtons: true,
-            showFontSize: true,
-            showCodeBlock: false,
-            showBackgroundColorButton: false,
-            showInlineCode: false,
-            showQuote: false,
-            showIndent: true,
-            showListNumbers: true,
-            showListBullets: true,
-            showUnderLineButton: true,
-            showStrikeThrough: false,
-            showClearFormat: true,
-            showHeaderStyle: true,
-            showUndo: true,
-            showRedo: true,
-            showDirection: false,
-            showJustifyAlignment: false,
-            onImagePickCallback: _onImagePickCallback,
+            multiRowsDisplay: false,
+            children: [
+              const quill.HistoryButton(isUndo: true),
+              const quill.HistoryButton(isUndo: false),
+              const quill.BoldButton(),
+              const quill.ItalicButton(),
+              const quill.UnderlineButton(),
+              const quill.FontSizeButton(),
+              const quill.ListNumbersButton(),
+              const quill.ListBulletsButton(),
+              quill.ImageButton(
+                onImagePickCallback: _onImagePickCallback,
+              ),
+            ],
           ),
-          // Rich Text Editor
           Expanded(
-            child: Container(
+            child: Padding(
               padding: const EdgeInsets.all(12.0),
-              child: quill.QuillEditor.basic(
+              child: quill.QuillEditor(
                 controller: _controller,
-                readOnly: false, // Omogućava uređivanje
+                scrollController: ScrollController(),
+                scrollable: true,
+                focusNode: _focusNode,
+                autoFocus: true,
+                readOnly: false,
+                expands: true,
+                padding: EdgeInsets.zero,
               ),
             ),
           ),
@@ -66,13 +67,11 @@ class _NotesScreenState extends State<NotesScreen> {
     );
   }
 
-  // Čuva belešku kao JSON i šalje je nazad na prethodni ekran
   void _saveNote() {
     final jsonContent = jsonEncode(_controller.document.toDelta().toJson());
-    Navigator.pop(context, jsonContent); // Vraćamo nazad
+    Navigator.pop(context, jsonContent);
   }
 
-  // Callback za slike (lokalna putanja slike se koristi)
   Future<String> _onImagePickCallback(File file) async {
     return file.path;
   }
