@@ -1,3 +1,4 @@
+import 'dart:async'; // <- Dodato za Timer
 import 'dart:convert';
 import 'dart:io';
 
@@ -54,9 +55,8 @@ class _NotesScreenState extends State<NotesScreen> {
 
     // Slušaj promene da auto-save radi
     _controller.document.changes.listen((event) {
-      // event je Tuple3<ChangeSource, Delta, Delta>
-      // Samo čuvaj ako je iz UI promene (korisnik kuca)
-      if (event.item1 == ChangeSource.LOCAL) {
+      // Promenjeno: event.source umesto event.item1
+      if (event.source == ChangeSource.LOCAL) {
         _autoSave();
       }
     });
@@ -115,7 +115,10 @@ class _NotesScreenState extends State<NotesScreen> {
             icon: _isSaving
                 ? const Padding(
                     padding: EdgeInsets.all(12.0),
-                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
                   )
                 : const Icon(Icons.save),
             onPressed: _isSaving
@@ -139,11 +142,11 @@ class _NotesScreenState extends State<NotesScreen> {
                 controller: _controller,
                 scrollController: ScrollController(),
                 focusNode: _focusNode,
-                autoFocus: true,
                 readOnly: false,
                 expands: true,
                 padding: EdgeInsets.zero,
                 scrollable: true,
+                // Uklonjen: autoFocus: true
               ),
             ),
           ),
