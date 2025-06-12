@@ -53,7 +53,7 @@ class _NotesScreenState extends State<NotesScreen> {
 
     _controller.changes.listen((event) {
       final source = event.source;
-      if (source == ChangeSource.LOCAL) _autoSave();
+      if (source == ChangeSource.local) _autoSave();
     });
 
     setState(() => _isLoading = false);
@@ -120,7 +120,6 @@ class _NotesScreenState extends State<NotesScreen> {
                 controller: _controller,
                 scrollController: ScrollController(),
                 focusNode: _focusNode,
-                expands: true,
                 padding: EdgeInsets.zero,
                 scrollable: true,
               ),
