@@ -1,4 +1,4 @@
-import 'dart:async'; // <- Dodato za Timer
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -21,12 +21,12 @@ class _NotesScreenState extends State<NotesScreen> {
   bool _isLoading = true;
   bool _isSaving = false;
 
+  Timer? _debounce;
+
   @override
   void initState() {
     super.initState();
-    _initFile().then((_) {
-      _loadDocument();
-    });
+    _initFile().then((_) => _loadDocument());
   }
 
   Future<void> _initFile() async {
@@ -36,7 +36,6 @@ class _NotesScreenState extends State<NotesScreen> {
 
   Future<void> _loadDocument() async {
     final file = File(_filePath);
-
     if (await file.exists()) {
       try {
         final jsonStr = await file.readAsString();
@@ -45,49 +44,32 @@ class _NotesScreenState extends State<NotesScreen> {
           document: doc,
           selection: const TextSelection.collapsed(offset: 0),
         );
-      } catch (e) {
-        // Ako nešto nije u redu, kreiraj prazan dokument
+      } catch (_) {
         _controller = QuillController.basic();
       }
     } else {
       _controller = QuillController.basic();
     }
 
-    // Slušaj promene da auto-save radi
-    _controller.document.changes.listen((event) {
-      // Promenjeno: event.source umesto event.item1
-      if (event.source == ChangeSource.LOCAL) {
-        _autoSave();
-      }
+    _controller.changes.listen((event) {
+      final source = event.source;
+      if (source == ChangeSource.LOCAL) _autoSave();
     });
 
-    setState(() {
-      _isLoading = false;
-    });
+    setState(() => _isLoading = false);
+  }
+
+  void _autoSave() {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(seconds: 2), _saveDocument);
   }
 
   Future<void> _saveDocument() async {
-    setState(() {
-      _isSaving = true;
-    });
-
+    setState(() => _isSaving = true);
     final file = File(_filePath);
     final jsonStr = jsonEncode(_controller.document.toDelta().toJson());
     await file.writeAsString(jsonStr);
-
-    setState(() {
-      _isSaving = false;
-    });
-  }
-
-  Timer? _debounce;
-
-  // Auto-save posle kratke pauze da ne čuva svaki karakter posebno
-  void _autoSave() {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(seconds: 2), () {
-      _saveDocument();
-    });
+    setState(() => _isSaving = false);
   }
 
   @override
@@ -108,17 +90,14 @@ class _NotesScreenState extends State<NotesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Beleške'),
-        backgroundColor: Colors.orange,
+        title: const Text('Notes'),
         actions: [
           IconButton(
             icon: _isSaving
                 ? const Padding(
                     padding: EdgeInsets.all(12.0),
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 2,
-                    ),
+                    child:
+                        CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                   )
                 : const Icon(Icons.save),
             onPressed: _isSaving
@@ -126,8 +105,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 : () async {
                     await _saveDocument();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Beleške sačuvane')),
-                    );
+                        const SnackBar(content: Text('Notes saved')));
                   },
           ),
         ],
@@ -136,17 +114,15 @@ class _NotesScreenState extends State<NotesScreen> {
         children: [
           QuillToolbar.basic(controller: _controller),
           Expanded(
-            child: Container(
+            child: Padding(
               padding: const EdgeInsets.all(10),
               child: QuillEditor(
                 controller: _controller,
                 scrollController: ScrollController(),
                 focusNode: _focusNode,
-                readOnly: false,
                 expands: true,
                 padding: EdgeInsets.zero,
                 scrollable: true,
-                // Uklonjen: autoFocus: true
               ),
             ),
           ),
