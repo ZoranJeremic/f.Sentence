@@ -1,5 +1,6 @@
 # f.Sentence
 *Pronounced without dot*
+
 ![ic_launcher](https://github.com/user-attachments/assets/094cf8ce-40c3-4105-9948-02e25955561a)
 
 f.Sentence isn't only a text editor - it is an app for creatives, students and people who want to get work done efficiently. 
