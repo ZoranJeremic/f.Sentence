@@ -3,18 +3,18 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
-  const NotesScreen({Key? key}) : super(key: key);
+  const NotesScreen({super.key});
 
   @override
   State<NotesScreen> createState() => _NotesScreenState();
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  late QuillController _controller;
+  late quill.QuillController _controller;
   final FocusNode _focusNode = FocusNode();
   late String _filePath;
   bool _isLoading = true;
@@ -37,26 +37,24 @@ class _NotesScreenState extends State<NotesScreen> {
     if (await file.exists()) {
       try {
         final jsonStr = await file.readAsString();
-        final doc = Document.fromJson(jsonDecode(jsonStr));
-        _controller = QuillController(
+        final doc = quill.Document.fromJson(jsonDecode(jsonStr));
+        _controller = quill.QuillController(
           document: doc,
           selection: const TextSelection.collapsed(offset: 0),
         );
       } catch (_) {
-        _controller = QuillController.basic();
+        _controller = quill.QuillController.basic();
       }
     } else {
-      _controller = QuillController.basic();
+      _controller = quill.QuillController.basic();
     }
 
-    _controller.changes.listen((event) {
-      if (event.source == ChangeSource.LOCAL) _autoSave();
-    });
+    _controller.addListener(_onEditorChanged);
 
     setState(() => _isLoading = false);
   }
 
-  void _autoSave() {
+  void _onEditorChanged() {
     _debounce?.cancel();
     _debounce = Timer(const Duration(seconds: 2), _saveDocument);
   }
@@ -112,17 +110,17 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: Column(
         children: [
-          QuillToolbar.basic(controller: _controller),
+          quill.QuillToolbar.basic(controller: _controller),
           Expanded(
             child: Container(
               padding: const EdgeInsets.all(10),
-              child: QuillEditor(
+              child: quill.QuillEditor(
                 controller: _controller,
-                scrollController: ScrollController(),
-                scrollable: true,
                 focusNode: _focusNode,
                 autoFocus: true,
                 readOnly: false,
+                scrollController: ScrollController(),
+                scrollable: true,
                 expands: true,
                 padding: EdgeInsets.zero,
               ),
