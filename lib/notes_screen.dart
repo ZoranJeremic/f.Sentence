@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' hide Text;
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  late QuillController _controller;
+  late quill.QuillController _controller;
   final FocusNode _focusNode = FocusNode();
 
   late String _filePath;
@@ -39,21 +39,22 @@ class _NotesScreenState extends State<NotesScreen> {
     if (await file.exists()) {
       try {
         final jsonStr = await file.readAsString();
-        final doc = Document.fromJson(jsonDecode(jsonStr));
-        _controller = QuillController(
+        final doc = quill.Document.fromJson(jsonDecode(jsonStr));
+        _controller = quill.QuillController(
           document: doc,
           selection: const TextSelection.collapsed(offset: 0),
         );
       } catch (_) {
-        _controller = QuillController.basic();
+        _controller = quill.QuillController.basic();
       }
     } else {
-      _controller = QuillController.basic();
+      _controller = quill.QuillController.basic();
     }
 
-    _controller.changes.listen((event) {
-      final source = event.source;
-      if (source == ChangeSource.LOCAL) _autoSave();
+    _controller.document.changes.listen((event) {
+      if (event.source == quill.ChangeSource.local) {
+        _autoSave();
+      }
     });
 
     setState(() => _isLoading = false);
@@ -96,8 +97,8 @@ class _NotesScreenState extends State<NotesScreen> {
             icon: _isSaving
                 ? const Padding(
                     padding: EdgeInsets.all(12.0),
-                    child:
-                        CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                    child: CircularProgressIndicator(
+                        color: Colors.white, strokeWidth: 2),
                   )
                 : const Icon(Icons.save),
             onPressed: _isSaving
@@ -112,17 +113,18 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: Column(
         children: [
-          QuillToolbar.basic(controller: _controller),
+          quill.QuillToolbar.basic(controller: _controller),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(10),
-              child: QuillEditor(
+              child: quill.QuillEditor(
                 controller: _controller,
                 scrollController: ScrollController(),
                 focusNode: _focusNode,
-                expands: true,
                 padding: EdgeInsets.zero,
                 scrollable: true,
+                autoFocus: true,
+                readOnly: false,
               ),
             ),
           ),
