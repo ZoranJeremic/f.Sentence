@@ -113,7 +113,8 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: Column(
         children: [
-          quill.QuillToolbar.basic(controller: _controller),
+          // Toolbar više ne postoji, uklonjena iz v11.4.1
+          const SizedBox(height: 10),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(10),
@@ -121,9 +122,8 @@ class _NotesScreenState extends State<NotesScreen> {
                 controller: _controller,
                 scrollController: ScrollController(),
                 focusNode: _focusNode,
-                padding: EdgeInsets.zero,
-                scrollable: true,
                 autoFocus: true,
+                scrollable: true,
                 readOnly: false,
               ),
             ),
