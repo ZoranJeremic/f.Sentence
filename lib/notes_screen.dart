@@ -51,10 +51,8 @@ class _NotesScreenState extends State<NotesScreen> {
       _controller = quill.QuillController.basic();
     }
 
-    _controller.document.changes.listen((event) {
-      if (event.source == quill.ChangeSource.local) {
-        _autoSave();
-      }
+    _controller.changes.listen((_) {
+      _autoSave();
     });
 
     setState(() => _isLoading = false);
@@ -79,6 +77,27 @@ class _NotesScreenState extends State<NotesScreen> {
     _controller.dispose();
     _debounce?.cancel();
     super.dispose();
+  }
+
+  Widget _buildToolbar() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: quill.QuillToolbar(
+        configurations: quill.QuillToolbarConfigurations(
+          controller: _controller,
+          multiRowsDisplay: false,
+          showAlignmentButtons: true,
+          showColorButton: true,
+          showBackgroundColorButton: true,
+          showCodeBlock: true,
+          showQuote: true,
+          showIndent: true,
+          showListNumbers: true,
+          showListBullets: true,
+          showListCheck: true,
+        ),
+      ),
+    );
   }
 
   @override
@@ -113,18 +132,18 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: Column(
         children: [
-          // Toolbar više ne postoji, uklonjena iz v11.4.1
-          const SizedBox(height: 10),
+          _buildToolbar(),
+          const Divider(height: 1),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: quill.QuillEditor(
+            child: quill.QuillEditor(
+              configurations: quill.QuillEditorConfigurations(
                 controller: _controller,
-                scrollController: ScrollController(),
                 focusNode: _focusNode,
-                autoFocus: true,
-                scrollable: true,
+                scrollController: ScrollController(),
+                padding: const EdgeInsets.all(10),
                 readOnly: false,
+                sharedConfigurations:
+                    const quill.QuillSharedConfigurations(),
               ),
             ),
           ),
