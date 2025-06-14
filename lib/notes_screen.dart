@@ -3,24 +3,22 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
   const NotesScreen({Key? key}) : super(key: key);
 
   @override
-  _NotesScreenState createState() => _NotesScreenState();
+  State<NotesScreen> createState() => _NotesScreenState();
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  late quill.QuillController _controller;
+  late QuillController _controller;
   final FocusNode _focusNode = FocusNode();
-
   late String _filePath;
   bool _isLoading = true;
   bool _isSaving = false;
-
   Timer? _debounce;
 
   @override
@@ -39,27 +37,27 @@ class _NotesScreenState extends State<NotesScreen> {
     if (await file.exists()) {
       try {
         final jsonStr = await file.readAsString();
-        final doc = quill.Document.fromJson(jsonDecode(jsonStr));
-        _controller = quill.QuillController(
+        final doc = Document.fromJson(jsonDecode(jsonStr));
+        _controller = QuillController(
           document: doc,
           selection: const TextSelection.collapsed(offset: 0),
         );
       } catch (_) {
-        _controller = quill.QuillController.basic();
+        _controller = QuillController.basic();
       }
     } else {
-      _controller = quill.QuillController.basic();
+      _controller = QuillController.basic();
     }
 
-    _controller.changes.listen((_) {
-      _autoSave();
+    _controller.changes.listen((event) {
+      if (event.source == ChangeSource.LOCAL) _autoSave();
     });
 
     setState(() => _isLoading = false);
   }
 
   void _autoSave() {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce?.cancel();
     _debounce = Timer(const Duration(seconds: 2), _saveDocument);
   }
 
@@ -79,27 +77,6 @@ class _NotesScreenState extends State<NotesScreen> {
     super.dispose();
   }
 
-  Widget _buildToolbar() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: quill.QuillToolbar(
-        configurations: quill.QuillToolbarConfigurations(
-          controller: _controller,
-          multiRowsDisplay: false,
-          showAlignmentButtons: true,
-          showColorButton: true,
-          showBackgroundColorButton: true,
-          showCodeBlock: true,
-          showQuote: true,
-          showIndent: true,
-          showListNumbers: true,
-          showListBullets: true,
-          showListCheck: true,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -117,7 +94,9 @@ class _NotesScreenState extends State<NotesScreen> {
                 ? const Padding(
                     padding: EdgeInsets.all(12.0),
                     child: CircularProgressIndicator(
-                        color: Colors.white, strokeWidth: 2),
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
                   )
                 : const Icon(Icons.save),
             onPressed: _isSaving
@@ -125,25 +104,27 @@ class _NotesScreenState extends State<NotesScreen> {
                 : () async {
                     await _saveDocument();
                     ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Notes saved')));
+                      const SnackBar(content: Text('Notes saved')),
+                    );
                   },
           ),
         ],
       ),
       body: Column(
         children: [
-          _buildToolbar(),
-          const Divider(height: 1),
+          QuillToolbar.basic(controller: _controller),
           Expanded(
-            child: quill.QuillEditor(
-              configurations: quill.QuillEditorConfigurations(
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: QuillEditor(
                 controller: _controller,
-                focusNode: _focusNode,
                 scrollController: ScrollController(),
-                padding: const EdgeInsets.all(10),
+                scrollable: true,
+                focusNode: _focusNode,
+                autoFocus: true,
                 readOnly: false,
-                sharedConfigurations:
-                    const quill.QuillSharedConfigurations(),
+                expands: true,
+                padding: EdgeInsets.zero,
               ),
             ),
           ),
