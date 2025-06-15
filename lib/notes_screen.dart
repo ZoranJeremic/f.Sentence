@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:flutter_quill_toolbar/flutter_quill_toolbar.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
