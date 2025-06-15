@@ -50,7 +50,7 @@ class _NotesScreenState extends State<NotesScreen> {
     await prefs.setString('note_content', contentJson);
     await prefs.setString('note_title', _titleController.text);
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Beleška sačuvana!')),
+      const SnackBar(content: Text('Note saved!')),
     );
   }
 
@@ -59,7 +59,7 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   void _unsetHeader() {
-    _controller.formatSelection(quill.Attribute.header.clone(null));
+    _controller.formatSelection(const quill.Attribute<String?>('header', quill.AttributeScope.BLOCK, null));
   }
 
   @override
