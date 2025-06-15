@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -37,7 +37,7 @@ class _NotesScreenState extends State<NotesScreen> {
     if (await file.exists()) {
       try {
         final jsonStr = await file.readAsString();
-        final doc = Document.fromJson(jsonDecode(jsonStr));
+        final doc = quill.Document.fromJson(jsonDecode(jsonStr));
         _controller = quill.QuillController(
           document: doc,
           selection: const TextSelection.collapsed(offset: 0),
@@ -118,7 +118,6 @@ class _NotesScreenState extends State<NotesScreen> {
                 controller: _controller,
                 focusNode: _focusNode,
                 scrollController: ScrollController(),
-                padding: EdgeInsets.zero,
                 readOnly: false,
                 expands: true,
               ),
