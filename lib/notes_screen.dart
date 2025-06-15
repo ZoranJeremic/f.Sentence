@@ -59,7 +59,7 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   void _unsetHeader() {
-    _controller.formatSelection(const quill.Attribute<String?>('header', quill.AttributeScope.BLOCK, null));
+    _controller.formatSelection(const quill.Attribute<String?>('header', 'block', null));
   }
 
   @override
