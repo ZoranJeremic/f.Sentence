@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+import 'package:flutter_quill/flutter_quill.dart'; as quill
 import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  late QuillController _controller;
+  late quill.QuillController _controller;
   final FocusNode _focusNode = FocusNode();
   late String _filePath;
   bool _isLoading = true;
@@ -38,15 +38,15 @@ class _NotesScreenState extends State<NotesScreen> {
       try {
         final jsonStr = await file.readAsString();
         final doc = Document.fromJson(jsonDecode(jsonStr));
-        _controller = QuillController(
+        _controller = quill.QuillController(
           document: doc,
           selection: const TextSelection.collapsed(offset: 0),
         );
       } catch (_) {
-        _controller = QuillController.basic();
+        _controller = quill.QuillController.basic();
       }
     } else {
-      _controller = QuillController.basic();
+      _controller = quill.QuillController.basic();
     }
 
     _controller.addListener(_onEditorChanged);
@@ -110,17 +110,15 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: Column(
         children: [
-          QuillToolbar.basic(controller: _controller),
+          quill.QuillToolbar.basic(controller: _controller),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: QuillEditor(
+              child: quill.QuillEditor(
                 controller: _controller,
                 focusNode: _focusNode,
                 scrollController: ScrollController(),
-                scrollable: true,
                 padding: EdgeInsets.zero,
-                autoFocus: true, // ovo radi jer je deo widgeta, nije named param
                 readOnly: false,
                 expands: true,
               ),
