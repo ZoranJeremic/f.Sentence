@@ -103,7 +103,6 @@ class _NotesScreenState extends State<NotesScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: quill.QuillEditor.basic(
                 controller: _controller,
-                readOnly: false,
               ),
             ),
           ),
