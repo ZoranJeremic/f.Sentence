@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
               print('New note created');
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const NotesScreen()), // Navigacija do NotesScreen
+                MaterialPageRoute(builder: (context) => NotesScreen(initialTitle: 'New note')),
               );
             },
           ),
