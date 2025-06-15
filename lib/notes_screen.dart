@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill_toolbar/flutter_quill_toolbar.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -114,7 +115,7 @@ class _NotesScreenState extends State<NotesScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: quill.QuillEditor(
+              child: quill.QuillEditor.basic(
                 controller: _controller,
                 focusNode: _focusNode,
                 scrollController: ScrollController(),
