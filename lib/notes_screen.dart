@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:path_provider/path_provider.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  late quill.QuillController _controller;
+  late QuillController _controller;
   final FocusNode _focusNode = FocusNode();
   late String _filePath;
   bool _isLoading = true;
@@ -37,16 +37,16 @@ class _NotesScreenState extends State<NotesScreen> {
     if (await file.exists()) {
       try {
         final jsonStr = await file.readAsString();
-        final doc = quill.Document.fromJson(jsonDecode(jsonStr));
-        _controller = quill.QuillController(
+        final doc = Document.fromJson(jsonDecode(jsonStr));
+        _controller = QuillController(
           document: doc,
           selection: const TextSelection.collapsed(offset: 0),
         );
       } catch (_) {
-        _controller = quill.QuillController.basic();
+        _controller = QuillController.basic();
       }
     } else {
-      _controller = quill.QuillController.basic();
+      _controller = QuillController.basic();
     }
 
     _controller.addListener(_onEditorChanged);
@@ -110,19 +110,19 @@ class _NotesScreenState extends State<NotesScreen> {
       ),
       body: Column(
         children: [
-          quill.QuillToolbar.basic(controller: _controller),
+          QuillToolbar.basic(controller: _controller),
           Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: quill.QuillEditor(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: QuillEditor(
                 controller: _controller,
                 focusNode: _focusNode,
-                autoFocus: true,
-                readOnly: false,
                 scrollController: ScrollController(),
                 scrollable: true,
-                expands: true,
                 padding: EdgeInsets.zero,
+                autoFocus: true, // ovo radi jer je deo widgeta, nije named param
+                readOnly: false,
+                expands: true,
               ),
             ),
           ),
