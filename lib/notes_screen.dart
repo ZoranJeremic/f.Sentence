@@ -135,7 +135,7 @@ class _NotesScreenState extends State<NotesScreen> {
               scrollable: true,
               focusNode: _editorFocusNode,
               autoFocus: true,
-              readOnly: false,
+              enabled: true, 
               expands: false,
               padding: const EdgeInsets.all(12),
               placeholder: 'Počni da pišeš...',
