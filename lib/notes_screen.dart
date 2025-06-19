@@ -56,8 +56,7 @@ class _NotesScreenState extends State<NotesScreen> {
     final imageUrl = await _uploadImage(file);
 
     final index = _controller.selection.baseOffset;
-    _controller.document.insert(index, "\n");
-    _controller.formatSelection(quill.Attribute.embed);
+    _controller.document.insert(index, ;
     _controller.document.insert(index + 1, {
       "insert": {
         "image": imageUrl,
@@ -76,16 +75,16 @@ class _NotesScreenState extends State<NotesScreen> {
       builder: (_) {
         final renameController = TextEditingController(text: _titleController.text);
         return AlertDialog(
-          title: const Text('Preimenuj belešku'),
+          title: const Text('Rename'),
           content: TextField(controller: renameController),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, null),
-              child: const Text('Otkaži'),
+              child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context, renameController.text),
-              child: const Text('Sačuvaj'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -132,13 +131,12 @@ class _NotesScreenState extends State<NotesScreen> {
             child: quill.QuillEditor(
               controller: _controller,
               scrollController: ScrollController(),
-              scrollable: true,
               focusNode: _editorFocusNode,
               autoFocus: true,
               enabled: true, 
               expands: false,
               padding: const EdgeInsets.all(12),
-              placeholder: 'Počni da pišeš...',
+              placeholder: 'Tap here to start typing... ',
             ),
           ),
           if (isKeyboardOpen) _buildToolbar(),
