@@ -2,6 +2,9 @@
 
 # Miscellaneous
 *.class
+*.html
+*.css
+*.js
 *.lock
 *.log
 *.pyc
