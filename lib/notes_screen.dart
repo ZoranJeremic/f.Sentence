@@ -132,7 +132,6 @@ class _NotesScreenState extends State<NotesScreen> {
               controller: _controller,
               scrollController: ScrollController(),
               focusNode: _editorFocusNode,
-              autoFocus: true,
               enabled: true, 
               expands: false,
               padding: const EdgeInsets.all(12),
