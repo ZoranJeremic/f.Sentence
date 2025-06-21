@@ -56,7 +56,7 @@ class _NotesScreenState extends State<NotesScreen> {
     final imageUrl = await _uploadImage(file);
 
     final index = _controller.selection.baseOffset;
-    _controller.document.insert(index, ;
+    _controller.document.insert(index, 'New note');
     _controller.document.insert(index + 1, {
       "insert": {
         "image": imageUrl,
