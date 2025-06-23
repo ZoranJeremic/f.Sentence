@@ -130,12 +130,16 @@ class _NotesScreenState extends State<NotesScreen> {
           Expanded(
             child: quill.QuillEditor(
               controller: _controller,
-              scrollController: ScrollController(),
               focusNode: _editorFocusNode,
-              enabled: true, 
+              scrollController: ScrollController(),
+              scrollable: true,
+              autoFocus: true,
               expands: false,
               padding: const EdgeInsets.all(12),
-              placeholder: 'Tap here to start typing... ',
+              enableInteractiveSelection: true,
+              onTapUp: (details, p1) {
+                return true;
+              },
             ),
           ),
           if (isKeyboardOpen) _buildToolbar(),
