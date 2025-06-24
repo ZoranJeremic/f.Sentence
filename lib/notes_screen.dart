@@ -132,7 +132,6 @@ class _NotesScreenState extends State<NotesScreen> {
               controller: _controller,
               focusNode: _editorFocusNode,
               scrollController: ScrollController(),
-              padding: const EdgeInsets.all(12),
               enableInteractiveSelection: true,
               onTapUp: (details, p1) {
                 return true;
