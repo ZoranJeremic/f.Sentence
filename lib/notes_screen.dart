@@ -132,9 +132,6 @@ class _NotesScreenState extends State<NotesScreen> {
               controller: _controller,
               focusNode: _editorFocusNode,
               scrollController: ScrollController(),
-              onTapUp: (details, p1) {
-                return true;
-              },
             ),
           ),
           if (isKeyboardOpen) _buildToolbar(),
