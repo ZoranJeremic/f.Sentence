@@ -148,7 +148,6 @@ class _NotesScreenState extends State<NotesScreen> {
   Widget _buildToolbar() {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
         color: Colors.grey[100],
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
