@@ -149,9 +149,16 @@ class _NotesScreenState extends State<NotesScreen> {
           child: Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.format_bold),
-                onPressed: () => _controller.formatSelection(quill.Attribute.bold),
-              ),
+  icon: const Icon(Icons.format_bold),
+  onPressed: () {
+    final attrs = _controller.getSelectionStyle().attributes;
+    if (attrs.containsKey(quill.Attribute.bold.key)) {
+      _controller.formatSelection(quill.Attribute.clone(quill.Attribute.bold, null));
+    } else {
+      _controller.formatSelection(quill.Attribute.bold);
+    }
+  },
+),
               IconButton(
                 icon: const Icon(Icons.format_italic),
                 onPressed: () => _controller.formatSelection(quill.Attribute.italic),
