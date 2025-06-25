@@ -132,6 +132,7 @@ class _NotesScreenState extends State<NotesScreen> {
               controller: _controller,
               focusNode: _editorFocusNode,
               scrollController: ScrollController(),
+              placeholder: 'Tap here to start typing', 
             ),
           ),
           if (isKeyboardOpen) _buildToolbar(),
