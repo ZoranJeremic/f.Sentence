@@ -14,7 +14,10 @@ import 'drawing.dart';
 import 'pdf.dart';
 
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox<String>('notes');
   runApp(const MyApp());
 }
 
