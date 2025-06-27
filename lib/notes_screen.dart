@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'dart:convert';
 import 'dart:io';
 
 class NotesScreen extends StatefulWidget {
-  Color _getColor(String key) {
-  final attrs = _controller.getSelectionStyle().attributes;
-  return attrs.containsKey(key) ? Colors.blue : Colors.black;
-}
-
   final String initialTitle;
   final quill.Document? initialDoc;
 
@@ -25,22 +19,6 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-
-  Color _getColor(String key) {
-  final attrs = _controller.getSelectionStyle().attributes;
-  return attrs.containsKey(key) ? Colors.blue : Colors.black;
-}
-
-  void _pickAndInsertImage() async {
-  final picker = ImagePicker();
-  final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
-  if (pickedImage == null) return;
-
-  // simulacija: samo ubaci path kao text (dok ne napraviš pravi embed)
-  final index = _controller.selection.baseOffset;
-  _controller.document.insert(index, pickedImage.path);
-}
-
   late quill.QuillController _controller;
   late TextEditingController _titleController;
   final FocusNode _editorFocusNode = FocusNode();
@@ -48,6 +26,8 @@ class _NotesScreenState extends State<NotesScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Inicijalizacija kontrolera za naslov i za Quill editor
     _titleController = TextEditingController(text: widget.initialTitle);
     _controller = quill.QuillController(
       document: widget.initialDoc ?? quill.Document(),
@@ -63,30 +43,44 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   void _autoSave() {
-    // OVDE će ići logika za čuvanje u bazu (u sledećem koraku)
+    // Logika za čuvanje kasnije možeš dodati ovde
     debugPrint("Autosave triggered. Title: ${_titleController.text}");
   }
 
-  void _addImage() async {
+  // Toggle stilizacije — ovo radi on/off za format
+  void _toggleAttribute(quill.Attribute attr) {
+    final attrs = _controller.getSelectionStyle().attributes;
+    if (attrs.containsKey(attr.key)) {
+      _controller.formatSelection(quill.Attribute.clone(attr, null)); // poništi
+    } else {
+      _controller.formatSelection(attr); // uključi
+    }
+  }
+
+  // Dobij boju dugmeta (plava ako je aktivno, crna ako nije)
+  Color _getColor(String key) {
+    final attrs = _controller.getSelectionStyle().attributes;
+    return attrs.containsKey(key) ? Colors.blue : Colors.black;
+  }
+
+  // Ubacivanje slike kao pravi embed, ne samo tekst
+  void _pickAndInsertImage() async {
     final picker = ImagePicker();
-    final XFile? pickedImage =
-        await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
     if (pickedImage == null) return;
 
     final file = File(pickedImage.path);
     final imageUrl = await _uploadImage(file);
 
     final index = _controller.selection.baseOffset;
-    _controller.document.insert(index, 'New note');
-    _controller.document.insert(index + 1, {
-      "insert": {
-        "image": imageUrl,
-      }
-    });
+    // Ubaci embed za sliku na trenutnu poziciju kursora
+    _controller.document.insert(index, '\n'); // novi red pre slike
+    _controller.formatText(index, 1, quill.Attribute.blockEmbed); // embed na novom redu
+    _controller.document.insert(index + 1, quill.Embed.image(imageUrl));
   }
 
   Future<String> _uploadImage(File file) async {
-    // Placeholder — u budućnosti ćeš ovo povezati sa lokalnim skladištem
+    // Za sad samo vraćamo lokalni path, možeš kasnije uploadovati na server
     return file.path;
   }
 
@@ -153,6 +147,11 @@ class _NotesScreenState extends State<NotesScreen> {
               controller: _controller,
               focusNode: _editorFocusNode,
               scrollController: ScrollController(),
+              padding: const EdgeInsets.all(12), // PADDINGEEEE
+              placeholder: 'Tap here to start typing...', // placeholder
+              expands: true,
+              autoFocus: true,
+              scrollable: true,
             ),
           ),
           if (isKeyboardOpen) _buildToolbar(),
@@ -169,65 +168,60 @@ class _NotesScreenState extends State<NotesScreen> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
+              // Bold dugme — toggle
               IconButton(
-  icon: Icon(Icons.format_bold, color: _getColor(quill.Attribute.bold.key)),
-  onPressed: () {
-    _controller.formatSelection(quill.Attribute.bold);
-  },
-),
+                icon: Icon(Icons.format_bold, color: _getColor(quill.Attribute.bold.key)),
+                onPressed: () => _toggleAttribute(quill.Attribute.bold),
+              ),
+              // Italic dugme — toggle
               IconButton(
-  icon: Icon(Icons.format_italic, color: _getColor(quill.Attribute.italic.key)),
-  onPressed: () {
-    _controller.formatSelection(quill.Attribute.italic);
-  },
-),
+                icon: Icon(Icons.format_italic, color: _getColor(quill.Attribute.italic.key)),
+                onPressed: () => _toggleAttribute(quill.Attribute.italic),
+              ),
+              // Underline dugme — toggle
               IconButton(
-  icon: Icon(Icons.format_underline, color: _getColor(quill.Attribute.underline.key)),
-  onPressed: () {
-    _controller.formatSelection(quill.Attribute.underline);
-  },
-),
+                icon: Icon(Icons.format_underline, color: _getColor(quill.Attribute.underline.key)),
+                onPressed: () => _toggleAttribute(quill.Attribute.underline),
+              ),
+              // Heading 1
               IconButton(
-  icon: Icon(Icons.title, color: _getColor(quill.Attribute.h1.key)),
-  onPressed: () {
-    _controller.formatSelection(quill.Attribute.h1);
-  },
-),
+                icon: Icon(Icons.title, color: _getColor(quill.Attribute.h1.key)),
+                onPressed: () => _toggleAttribute(quill.Attribute.h1),
+              ),
+              // Heading 2
               IconButton(
-  icon: Icon(Icons.title_outlined, color: _getColor(quill.Attribute.h2.key)),
-  onPressed: () {
-    _controller.formatSelection(quill.Attribute.h2);
-  },
-),
+                icon: Icon(Icons.title_outlined, color: _getColor(quill.Attribute.h2.key)),
+                onPressed: () => _toggleAttribute(quill.Attribute.h2),
+              ),
+              // Bullet list
               IconButton(
-  icon: Icon(Icons.format_list_bulleted, color: _getColor(quill.Attribute.ul.key)),
-  onPressed: () {
-    _controller.formatSelection(quill.Attribute.ul);
-  },
-),
+                icon: Icon(Icons.format_list_bulleted, color: _getColor(quill.Attribute.ul.key)),
+                onPressed: () => _toggleAttribute(quill.Attribute.ul),
+              ),
+              // Numbered list
               IconButton(
-  icon: Icon(Icons.format_list_numbered, color: _getColor(quill.Attribute.ol.key)),
-  onPressed: () {
-    _controller.formatSelection(quill.Attribute.ol);
-  },
-),
+                icon: Icon(Icons.format_list_numbered, color: _getColor(quill.Attribute.ol.key)),
+                onPressed: () => _toggleAttribute(quill.Attribute.ol),
+              ),
+              // Checkbox
               IconButton(
-  icon: Icon(Icons.check_box, color: _getColor(quill.Attribute.unchecked.key)),
-  onPressed: () {
-    _controller.formatSelection(quill.Attribute.unchecked);
-  },
-),
+                icon: Icon(Icons.check_box, color: _getColor(quill.Attribute.unchecked.key)),
+                onPressed: () => _toggleAttribute(quill.Attribute.unchecked),
+              ),
+              // Undo
               IconButton(
                 icon: const Icon(Icons.undo),
                 onPressed: () => _controller.undo(),
               ),
+              // Redo
               IconButton(
                 icon: const Icon(Icons.redo),
                 onPressed: () => _controller.redo(),
               ),
+              // Insert image
               IconButton(
-  icon: const Icon(Icons.image),
-  onPressed: _pickAndInsertImage,
+                icon: const Icon(Icons.image),
+                onPressed: _pickAndInsertImage,
               ),
             ],
           ),
