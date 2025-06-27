@@ -25,6 +25,22 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
+
+  Color _getColor(String key) {
+  final attrs = _controller.getSelectionStyle().attributes;
+  return attrs.containsKey(key) ? Colors.blue : Colors.black;
+}
+
+  void _pickAndInsertImage() async {
+  final picker = ImagePicker();
+  final XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+  if (pickedImage == null) return;
+
+  // simulacija: samo ubaci path kao text (dok ne napraviš pravi embed)
+  final index = _controller.selection.baseOffset;
+  _controller.document.insert(index, pickedImage.path);
+}
+
   late quill.QuillController _controller;
   late TextEditingController _titleController;
   final FocusNode _editorFocusNode = FocusNode();
@@ -154,77 +170,51 @@ class _NotesScreenState extends State<NotesScreen> {
           child: Row(
             children: [
               IconButton(
-  icon: const Icon(Icons.format_bold),
+  icon: Icon(Icons.format_bold, color: _getColor(quill.Attribute.bold.key)),
   onPressed: () {
-    final attrs = _controller.getSelectionStyle().attributes;
-    if (attrs.containsKey(quill.Attribute.bold.key)) {
-      _controller.formatSelection(quill.Attribute.clone(quill.Attribute.bold, null));
-    } else {
-      _controller.formatSelection(quill.Attribute.bold);
-    }
+    _controller.formatSelection(quill.Attribute.bold);
   },
 ),
               IconButton(
   icon: Icon(Icons.format_italic, color: _getColor(quill.Attribute.italic.key)),
   onPressed: () {
-    final isItalic = attrs.containsKey(quill.Attribute.italic.key);
-    _controller.formatSelection(
-      isItalic ? quill.Attribute.clone(quill.Attribute.italic, null) : quill.Attribute.italic,
-    );
+    _controller.formatSelection(quill.Attribute.italic);
   },
 ),
               IconButton(
   icon: Icon(Icons.format_underline, color: _getColor(quill.Attribute.underline.key)),
   onPressed: () {
-    final isUnderline = attrs.containsKey(quill.Attribute.underline.key);
-    _controller.formatSelection(
-      isUnderline ? quill.Attribute.clone(quill.Attribute.underline, null) : quill.Attribute.underline,
-    );
+    _controller.formatSelection(quill.Attribute.underline);
   },
 ),
               IconButton(
   icon: Icon(Icons.title, color: _getColor(quill.Attribute.h1.key)),
   onPressed: () {
-    final isH1 = attrs.containsKey(quill.Attribute.h1.key);
-    _controller.formatSelection(
-      isH1 ? quill.Attribute.clone(quill.Attribute.h1, null) : quill.Attribute.h1,
-    );
+    _controller.formatSelection(quill.Attribute.h1);
   },
 ),
               IconButton(
   icon: Icon(Icons.title_outlined, color: _getColor(quill.Attribute.h2.key)),
   onPressed: () {
-    final isH2 = attrs.containsKey(quill.Attribute.h2.key);
-    _controller.formatSelection(
-      isH2 ? quill.Attribute.clone(quill.Attribute.h2, null) : quill.Attribute.h2,
-    );
+    _controller.formatSelection(quill.Attribute.h2);
   },
 ),
               IconButton(
   icon: Icon(Icons.format_list_bulleted, color: _getColor(quill.Attribute.ul.key)),
   onPressed: () {
-    final isUl = attrs.containsKey(quill.Attribute.ul.key);
-    _controller.formatSelection(
-      isUl ? quill.Attribute.clone(quill.Attribute.ul, null) : quill.Attribute.ul,
-    );
+    _controller.formatSelection(quill.Attribute.ul);
   },
 ),
               IconButton(
   icon: Icon(Icons.format_list_numbered, color: _getColor(quill.Attribute.ol.key)),
   onPressed: () {
-    final isOl = attrs.containsKey(quill.Attribute.ol.key);
-    _controller.formatSelection(
-      isOl ? quill.Attribute.clone(quill.Attribute.ol, null) : quill.Attribute.ol,
-    );
+    _controller.formatSelection(quill.Attribute.ol);
   },
 ),
               IconButton(
   icon: Icon(Icons.check_box, color: _getColor(quill.Attribute.unchecked.key)),
   onPressed: () {
-    final isCheck = attrs.containsKey(quill.Attribute.unchecked.key);
-    _controller.formatSelection(
-      isCheck ? quill.Attribute.clone(quill.Attribute.unchecked, null) : quill.Attribute.unchecked,
-    );
+    _controller.formatSelection(quill.Attribute.unchecked);
   },
 ),
               IconButton(
