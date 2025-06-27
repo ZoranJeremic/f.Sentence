@@ -42,9 +42,13 @@ class _NotesScreenState extends State<NotesScreen> {
     await Permission.storage.request();
   }
 
-  void _autoSave() {
-    // Logika za čuvanje kasnije možeš dodati ovde
-    debugPrint("Autosave triggered. Title: ${_titleController.text}");
+  void _autoSave() async {
+  final box = Hive.box<String>('notes');
+  await box.put(
+    _titleController.text,
+    jsonEncode(_controller.document.toDelta().toJson()),
+  );
+  debugPrint("Autosave saved your note named: ${_titleController.text}");
   }
 
   // Toggle stilizacije — ovo radi on/off za format
