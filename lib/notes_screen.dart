@@ -81,8 +81,10 @@ class _NotesScreenState extends State<NotesScreen> {
     final index = _controller.selection.baseOffset;
     // Ubaci embed za sliku na trenutnu poziciju kursora
     _controller.document.insert(index, '\n'); // novi red pre slike
-    _controller.formatText(index, 1, quill.Attribute.blockEmbed); // embed na novom redu
-    _controller.document.insert(index + 1, quill.Embed.image(imageUrl));
+    final imageDelta = quill.Delta()
+  ..retain(index)
+  ..insert({'image': imageUrl});
+_controller.compose(imageDelta, _controller.selection, quill.ChangeSource.LOCAL);
   }
 
   Future<String> _uploadImage(File file) async {
