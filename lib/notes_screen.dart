@@ -1,3 +1,5 @@
+import 'package:quill_delta/quill_delta.dart';
+import 'package:flutter_quill/models/change_source.dart';
 import 'package:hive/hive.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
