@@ -6,6 +6,11 @@ import 'dart:convert';
 import 'dart:io';
 
 class NotesScreen extends StatefulWidget {
+  Color _getColor(String key) {
+  final attrs = _controller.getSelectionStyle().attributes;
+  return attrs.containsKey(key) ? Colors.blue : Colors.black;
+}
+
   final String initialTitle;
   final quill.Document? initialDoc;
 
@@ -160,29 +165,68 @@ class _NotesScreenState extends State<NotesScreen> {
   },
 ),
               IconButton(
-                icon: const Icon(Icons.format_italic),
-                onPressed: () => _controller.formatSelection(quill.Attribute.italic),
-              ),
+  icon: Icon(Icons.format_italic, color: _getColor(quill.Attribute.italic.key)),
+  onPressed: () {
+    final isItalic = attrs.containsKey(quill.Attribute.italic.key);
+    _controller.formatSelection(
+      isItalic ? quill.Attribute.clone(quill.Attribute.italic, null) : quill.Attribute.italic,
+    );
+  },
+),
               IconButton(
-                icon: const Icon(Icons.format_underline),
-                onPressed: () => _controller.formatSelection(quill.Attribute.underline),
-              ),
+  icon: Icon(Icons.format_underline, color: _getColor(quill.Attribute.underline.key)),
+  onPressed: () {
+    final isUnderline = attrs.containsKey(quill.Attribute.underline.key);
+    _controller.formatSelection(
+      isUnderline ? quill.Attribute.clone(quill.Attribute.underline, null) : quill.Attribute.underline,
+    );
+  },
+),
               IconButton(
-                icon: const Icon(Icons.title),
-                onPressed: () => _controller.formatSelection(quill.Attribute.h1),
-              ),
+  icon: Icon(Icons.title, color: _getColor(quill.Attribute.h1.key)),
+  onPressed: () {
+    final isH1 = attrs.containsKey(quill.Attribute.h1.key);
+    _controller.formatSelection(
+      isH1 ? quill.Attribute.clone(quill.Attribute.h1, null) : quill.Attribute.h1,
+    );
+  },
+),
               IconButton(
-                icon: const Icon(Icons.format_list_bulleted),
-                onPressed: () => _controller.formatSelection(quill.Attribute.ul),
-              ),
+  icon: Icon(Icons.title_outlined, color: _getColor(quill.Attribute.h2.key)),
+  onPressed: () {
+    final isH2 = attrs.containsKey(quill.Attribute.h2.key);
+    _controller.formatSelection(
+      isH2 ? quill.Attribute.clone(quill.Attribute.h2, null) : quill.Attribute.h2,
+    );
+  },
+),
               IconButton(
-                icon: const Icon(Icons.format_list_numbered),
-                onPressed: () => _controller.formatSelection(quill.Attribute.ol),
-              ),
+  icon: Icon(Icons.format_list_bulleted, color: _getColor(quill.Attribute.ul.key)),
+  onPressed: () {
+    final isUl = attrs.containsKey(quill.Attribute.ul.key);
+    _controller.formatSelection(
+      isUl ? quill.Attribute.clone(quill.Attribute.ul, null) : quill.Attribute.ul,
+    );
+  },
+),
               IconButton(
-                icon: const Icon(Icons.check_box),
-                onPressed: () => _controller.formatSelection(quill.Attribute.unchecked),
-              ),
+  icon: Icon(Icons.format_list_numbered, color: _getColor(quill.Attribute.ol.key)),
+  onPressed: () {
+    final isOl = attrs.containsKey(quill.Attribute.ol.key);
+    _controller.formatSelection(
+      isOl ? quill.Attribute.clone(quill.Attribute.ol, null) : quill.Attribute.ol,
+    );
+  },
+),
+              IconButton(
+  icon: Icon(Icons.check_box, color: _getColor(quill.Attribute.unchecked.key)),
+  onPressed: () {
+    final isCheck = attrs.containsKey(quill.Attribute.unchecked.key);
+    _controller.formatSelection(
+      isCheck ? quill.Attribute.clone(quill.Attribute.unchecked, null) : quill.Attribute.unchecked,
+    );
+  },
+),
               IconButton(
                 icon: const Icon(Icons.undo),
                 onPressed: () => _controller.undo(),
@@ -192,8 +236,8 @@ class _NotesScreenState extends State<NotesScreen> {
                 onPressed: () => _controller.redo(),
               ),
               IconButton(
-                icon: const Icon(Icons.image),
-                onPressed: _addImage,
+  icon: const Icon(Icons.image),
+  onPressed: _pickAndInsertImage,
               ),
             ],
           ),
