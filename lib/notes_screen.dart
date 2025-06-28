@@ -1,5 +1,3 @@
-import 'package:quill_delta/quill_delta.dart';
-import 'package:flutter_quill/models/change_source.dart';
 import 'package:hive/hive.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -86,7 +84,12 @@ class _NotesScreenState extends State<NotesScreen> {
     final imageDelta = quill.Delta()
   ..retain(index)
   ..insert({'image': imageUrl});
-_controller.compose(imageDelta, _controller.selection, quill.ChangeSource.LOCAL);
+
+    _controller.compose(
+    imageDelta,
+    _controller.selection,
+    quill.ChangeSource.LOCAL,
+    );
   }
 
   Future<String> _uploadImage(File file) async {
@@ -153,17 +156,18 @@ _controller.compose(imageDelta, _controller.selection, quill.ChangeSource.LOCAL)
       body: Column(
         children: [
           Expanded(
-            child: quill.QuillEditor(
-              controller: _controller,
-              focusNode: _editorFocusNode,
-              scrollController: ScrollController(),
-              padding: const EdgeInsets.all(12), // PADDINGEEEE
-              placeholder: 'Tap here to start typing...', // placeholder
-              expands: true,
-              autoFocus: true,
-              scrollable: true,
+            child: Padding(
+              padding: const EdgeInsets.all(12), 
+              child: quill.QuillEditor(
+                controller: _controller,
+                focusNode: _editorFocusNode,
+                scrollController: ScrollController(),
+                placeholder: 'Tap here to start typing...', 
+                expands: true,
+                autoFocus: true,
+                scrollable: true,
+              ),
             ),
-          ),
           if (isKeyboardOpen) _buildToolbar(),
         ],
       ),
