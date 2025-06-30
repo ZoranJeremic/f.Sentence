@@ -164,7 +164,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 scrollController: ScrollController(),
                 // placeholderText: 'Tap here to start typing...',
                 // expands: true,
-                autoFocus: true,
+                // autoFocus: true,
                 scrollable: true,
               ),
             ),
