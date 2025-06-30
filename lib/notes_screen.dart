@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
-import 'package:flutter_quill/flutter_quill.dart'
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
@@ -162,7 +162,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 controller: _controller,
                 focusNode: _editorFocusNode,
                 scrollController: ScrollController(),
-                placeholderText: 'Tap here to start typing...',
+                // placeholderText: 'Tap here to start typing...',
                 expands: true,
                 autoFocus: true,
                 scrollable: true,
