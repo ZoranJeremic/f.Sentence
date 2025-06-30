@@ -83,13 +83,13 @@ class _NotesScreenState extends State<NotesScreen> {
     final index = _controller.selection.baseOffset;
     // Ubaci embed za sliku na trenutnu poziciju kursora
     _controller.document.insert(index, '\n'); // novi red pre slike
-    final imageDelta = quill.Delta()
+    final imageDelta = Delta()
       ..retain(index)
       ..insert({'image': imageUrl});
     _controller.compose(
     imageDelta,
     _controller.selection,
-    null,
+    ChangeSource.LOCAL,
     );
   }
 
@@ -164,7 +164,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 controller: _controller,
                 focusNode: _editorFocusNode,
                 scrollController: ScrollController(),
-                placeholder: 'Tap here to start typing...', 
+                placeholderText: 'Tap here to start typing...',
                 expands: true,
                 autoFocus: true,
                 scrollable: true,
