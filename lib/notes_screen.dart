@@ -3,10 +3,10 @@ import 'package:hive/hive.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart' as quill;
+import 'package:flutter_quill/flutter_quill.dart'
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
-import 'package:flutter_quill/src/models/documents/change_source.dart';
 
 class NotesScreen extends StatefulWidget {
   final String initialTitle;
@@ -87,7 +87,7 @@ class _NotesScreenState extends State<NotesScreen> {
     _controller.document.insert(index + 1, '\n');
     _controller.updateSelection(
     TextSelection.collapsed(offset: index + 2),
-    ChangeSource.LOCAL,
+    ChangeSource.local,
     );
   }
 
