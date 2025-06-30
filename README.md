@@ -15,6 +15,8 @@ Currently in early development. Updates will follow. Release date will be somewh
 
 Current builds support Android 5 and later and Android TV 5 or later.
 
+Note: I am restarting the development.
+
 # Upcoming features
 
 - [X] Note taking with basic formatting
