@@ -165,7 +165,7 @@ class _NotesScreenState extends State<NotesScreen> {
                 // placeholderText: 'Tap here to start typing...',
                 // expands: true,
                 // autoFocus: true,
-                scrollable: true,
+                // scrollable: true,
               ),
             ),
           ),
