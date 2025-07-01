@@ -11,7 +11,9 @@ App is 100% FOSS with no ads or in-app purchases.
 
 # Development status
 
-Currently in early development. Updates will follow. Release date will be somewhere around July 2025. 
+Currently in early development. Updates will follow. 
+
+Release date: 1.1.2026.
 
 Current builds support Android 5 and later and Android TV 5 or later.
 
