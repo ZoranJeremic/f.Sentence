@@ -45,4 +45,4 @@ Those ways include:
 All contributors must follow Covenant's Code of Conduct, provided in this repo. 
 
 -----------------------------------------------
-© 2026 Flake. 
+© 2025 Flake. 
