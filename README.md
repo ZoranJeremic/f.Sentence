@@ -36,4 +36,13 @@ This project is licensed under GNU General Public License v3.0. More details in 
 
 # Contributing to this project
 
-If you are interested in contributing to f.Sentence, please check Code of Conduct provided in this repo. 
+There are multiple ways to contribute to this project.
+
+Those ways include:
+- helping localize our project to different languages and make it internationally accessible. We use Weblate for this purpose.
+- contributing to source code, either by signing up for contributor access or creating a fork.
+
+All contributors must follow Covenant's Code of Conduct, provided in this repo. 
+
+-----------------------------------------------
+© 2026 Flake. 
