@@ -37,9 +37,8 @@ A detailed roadmap will be published soon.
 - PDF reading  
 - PDF editing  
 - PDF annotation  
-- Ebook reader  
 - Document creation  
-- Document templates
+- Offline collaboration
 
 ## 📜 Licensing
 
