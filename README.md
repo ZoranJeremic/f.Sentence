@@ -16,8 +16,6 @@ It goes far beyond a simple text editor, offering tools for:
 **100% Free and Open Source Software (FOSS)**  
 No ads. No in-app purchases. No nonsense.
 
----
-
 ## 🚀 Development Status
 
 Currently in **early development**. Frequent updates and breaking changes are expected as the app matures.
@@ -32,8 +30,6 @@ Currently in **early development**. Frequent updates and breaking changes are ex
 
 A detailed roadmap will be published soon.
 
----
-
 ## ✍️ Upcoming Features
 
 - Note-taking with basic formatting  
@@ -45,13 +41,9 @@ A detailed roadmap will be published soon.
 - Document creation  
 - Document templates
 
----
-
 ## 📜 Licensing
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE).
-
----
 
 ## 🤝 Contributing
 
@@ -66,12 +58,8 @@ We would love to have your contributions! Here’s how you can help:
 - Discuss major changes before submitting large pull requests  
 - Follow our code style guidelines (to be documented soon)
 
----
-
 ## 🧡 Credits
 
-Thanks to all contributors. 
+Thanks to all contributors that made this project alive. 
 
 © 2025 Flake. Made in Serbia 🇷🇸
-
----
