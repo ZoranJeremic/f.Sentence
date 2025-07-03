@@ -1,48 +1,77 @@
 # f.Sentence
-*Pronounced without dot*
+(pronounced “f Sentence”, without the dot)
 
 ![ic_launcher](https://github.com/user-attachments/assets/094cf8ce-40c3-4105-9948-02e25955561a)
 
-f.Sentence isn't only a text editor - it is an app for creatives, students and people who want to get work done efficiently. 
+**f.Sentence** is an open-source document editor and productivity app built for students, creatives, and anyone who wants to get work done efficiently across multiple document types. Designed for Android devices and Android TV, it aims to bring professional-grade features to everyone, completely free of charge.
 
-It provides with lots of features - from most basic ones, like creating documents, to the most advanced ones, like mind-mapping or PDF annotation. 
+It goes far beyond a simple text editor, offering tools for:
+- Document creation and editing
+- Note-taking with formatting options
+- PDF reading, editing, and annotation
+- Mind-mapping
+- Whiteboards
+- Offline collaboration! 
 
-App is 100% FOSS with no ads or in-app purchases.
+**100% Free and Open Source Software (FOSS)**  
+No ads. No in-app purchases. No nonsense.
 
-# Development status
+---
 
-Currently in early development. Updates will follow. 
+## 🚀 Development Status
 
-Release date: 1.1.2026.
+Currently in **early development**. Frequent updates and breaking changes are expected as the app matures.
 
-Current builds support Android 5 and later and Android TV 5 or later.
+**Next planned release date:** *January 1, 2026*  
 
-Note: I am restarting the development.
+**Supported platforms:**  
+✅ Android 5.0 and higher  
+✅ Android TV 5.0 and higher  
 
-# Upcoming features
+> **Note**: Development has been rebooted with a clearer architecture and new goals.
 
-- [X] Note taking with basic formatting
-- [ ] Opening documents from internal storage
-- [ ] PDF reading
-- [ ] PDF editing
-- [ ] PDF annotation
-- [ ] Ebook reader
-- [ ] Document creation
-- [ ] Document templates
+A detailed roadmap will be published soon.
 
-# Licensing
+---
 
-This project is licensed under GNU General Public License v3.0. More details in license file. 
+## ✍️ Upcoming Features
 
-# Contributing to this project
+- Note-taking with basic formatting  
+- Opening documents from internal storage  
+- PDF reading  
+- PDF editing  
+- PDF annotation  
+- Ebook reader  
+- Document creation  
+- Document templates
 
-There are multiple ways to contribute to this project.
+---
 
-Those ways include:
-- helping localize our project to different languages and make it internationally accessible. We use Weblate for this purpose.
-- contributing to source code, either by signing up for contributor access or creating a fork.
+## 📜 Licensing
 
-All contributors must follow Covenant's Code of Conduct, provided in this repo. 
+This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
------------------------------------------------
-© 2025 Flake. Made in Serbia. 
+---
+
+## 🤝 Contributing
+
+We would love to have your contributions! Here’s how you can help:  
+
+- Translate the app into different languages via Weblate  
+- Contribute to the source code (you can request contributor access or fork the repo)  
+- Share feedback and ideas  
+
+**Contribution rules:**  
+- Please respect our [Code of Conduct](CODE_OF_CONDUCT.md) (based on the Contributor Covenant)  
+- Discuss major changes before submitting large pull requests  
+- Follow our code style guidelines (to be documented soon)
+
+---
+
+## 🧡 Credits
+
+Thanks to all contributors. 
+
+© 2025 Flake. Made in Serbia 🇷🇸
+
+---
