@@ -61,4 +61,6 @@ We would love to have your contributions! Here’s how you can help:
 
 Thanks to all contributors that helped us on our journey. 
 
+---
+
 © 2025 Flake. Made in Serbia 🇷🇸
