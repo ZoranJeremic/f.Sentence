@@ -1,4 +1,9 @@
 name: Build f.Sentence APK
+# up to repo owner (2 options: write or read)
+# permissions:
+#   contents: write
+#   actions: write
+#   id-token: write
 
 on:
   push:
