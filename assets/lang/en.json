@@ -276,19 +276,29 @@
 
 "trash_preferences_custom_amount_of_time_number": "Type in amount of time", 
 
-  "about_app_version": "Version",
-  "about_app_open_source_licenses": "Open Source Licenses",
-  "about_app_open_source_licenses_details": "ovde licence svih biblioteka",
+  "app_version": "Version",
+  "open_source_licenses": "Open Source Licenses",
   "about_app_app_license": "GNU General Public License v3.0",
   "about_app_copyright": "©2025 Flake.",
   "about_app_links": "Links",
+  "github": "GitHub", 
+  "xda_forums": "XDA Forums",
+  "x": "X (Twitter)", 
 
-  "additional_home": "Home",
-  "additional_more": "More", 
+  "home": "Home",
+  "more": "More", 
 
-  "additional_language": "Language",
-  "additional_restore_default_settings": "Restore default settings",
-  "additional_backup_your_settings": "Backup your settings", "additional_restore_your_settings_from_backup": "Restore your settings from backup"
+  "language": "Language",
+  "serbian": "Serbian", 
+  "german": "German", 
+  "english": "English",
+  "lithuanian": "Lithuanian",
+  "french": "French",
+  "spanish": "Spanish",
+  "turkish": "Turkish",
+  "restore_default_settings": "Restore default settings",
+  "backup_your_settings": "Backup your settings", 
+"restore_your_settings_from_backup": "Restore your settings from backup"
 "ok": "ok",
 "cancel": "cancel", 
 "add": "add"
