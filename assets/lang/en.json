@@ -1,13 +1,13 @@
  {
   "whiteboard_lasso": "Lasso",
-  "whiteboard_sticky_notes_with_rich_text_formatting": "Sticky notes with rich text formatting",
+  "whiteboard_sticky_notes": "Sticky notes",
   "whiteboard_insert_shapes": "Shapes",
   "whiteboard_insert_lines": "Lines",
   "whiteboard_insert_photos": "Photos",
   "whiteboard_insert_videos": "Videos",
   "whiteboard_insert_files": "Files",
   "whiteboard_link_with_notes": "Notes",
-  "whiteboard_link_with_pdfs": "Pdf's",
+  "whiteboard_link_with_pdfs": "PDFs",
   "whiteboard_link_with_files": "Files",
   "whiteboard_link_with_documents": "Documents",
   "whiteboard_link_with_drawings": "Drawings",
@@ -274,6 +274,8 @@
   "trash_preferences_delete_automatically_after_1_week": "1 week",
   "trash_preferences_delete_automatically_after_custom_amount_of_time": "Custom amount of time:",
 
+"trash_preferences_custom_amount_of_time_number": "Type in amount of time", 
+
   "about_app_version": "Version",
   "about_app_open_source_licenses": "Open Source Licenses",
   "about_app_open_source_licenses_details": "ovde licence svih biblioteka",
@@ -286,6 +288,8 @@
 
   "additional_language": "Language",
   "additional_restore_default_settings": "Restore default settings",
-  "additional_backup_your_settings": "Backup your settings",
-  "additional_restore_your_settings_from_backup": "Restore your settings from backup"
+  "additional_backup_your_settings": "Backup your settings", "additional_restore_your_settings_from_backup": "Restore your settings from backup"
+"ok": "ok",
+"cancel": "cancel", 
+"add": "add"
 }
