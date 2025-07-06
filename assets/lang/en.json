@@ -1,7 +1,10 @@
  {
   "whiteboard_lasso": "Lasso",
+  "whiteboard_lasso_desc": "Draw around any item to select it.", 
   "whiteboard_sticky_notes": "Sticky notes",
+  "whiteboard_sticky_notes_desc": "Add sticky note to your whiteboard.", 
   "whiteboard_insert_shapes": "Shapes",
+  "whiteboard_insert_shapes_desc": "Insert any shape to your whiteboard.",
   "whiteboard_insert_lines": "Lines",
   "whiteboard_insert_photos": "Photos",
   "whiteboard_insert_videos": "Videos",
