@@ -272,5 +272,22 @@
     "additional_language": "",
     "additional_restore_default_settings": "",
     "additional_backup_your_settings": "",
-    "additional_restore_your_settings_from_backup": ""
+    "additional_restore_your_settings_from_backup": "",
+    "settings_theme": "Tema",
+    "settings_theme_mode": "Odaberite režim",
+    "settings_theme_dark": "Tamni",
+    "settings_theme_light": "Svetli",
+    "settings_theme_accent_color": "Istaknuta boja",
+    "settings_theme_white": "Bela",
+    "settings_theme_yellow": "Žuto",
+    "settings_theme_pink": "Roza",
+    "settings_theme_orange": "Narandžasta",
+    "settings_theme_red": "Crvena",
+    "settings_theme_green": "Zelena",
+    "settings_theme_blue": "Plava",
+    "settings_theme_monochrome": "Monohromatski",
+    "settings_theme_dynamic": "Dinamično (zahteva Android 12 ili noviji)",
+    "settings_documents_format": "Odaberite podrazumevani format",
+    "settings_documents_format_odt": ".odt",
+    "settings_documents_dark_theme_inside": "Tamni režim unutar dokumenta"
 }
