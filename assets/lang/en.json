@@ -1,5 +1,6 @@
 {
   "settings_theme": "Theme",
+  "settings_theme_tooltip": "Customize app's look and feel.", 
   "settings_theme_mode": "Select mode",
   "settings_theme_dark": "Dark",
   "settings_theme_light": "Light",
