@@ -286,5 +286,8 @@
     "settings_theme_green": "Zelena",
     "settings_theme_blue": "Plava",
     "settings_theme_monochrome": "Monohromatski",
-    "settings_theme_dynamic": "Dinamično (zahteva Android 12 i veći)"
+    "settings_theme_dynamic": "Dinamično (zahteva Android 12 ili noviji)",
+    "settings_documents_format": "Odaberite podrazumevani format",
+    "settings_documents_format_odt": ".odt",
+    "settings_documents_dark_theme_inside": "Tamni režim unutar dokumenta"
 }
