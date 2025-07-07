@@ -272,5 +272,11 @@
     "additional_language": "",
     "additional_restore_default_settings": "",
     "additional_backup_your_settings": "",
-    "additional_restore_your_settings_from_backup": ""
+    "additional_restore_your_settings_from_backup": "",
+    "settings_theme": "Tema",
+    "settings_theme_mode": "Odaberite režim",
+    "settings_theme_dark": "Tamni",
+    "settings_theme_light": "Svetli",
+    "settings_theme_accent_color": "Istaknuta boja",
+    "settings_theme_white": "Belo"
 }
