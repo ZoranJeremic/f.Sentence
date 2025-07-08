@@ -303,5 +303,6 @@
     "settings_documents_view_desktop": "Desktop prikaz",
     "settings_notes": "Podešavanja beležaka",
     "settings_notes_description": "Promenite svoja podešavanja beležaka.",
-    "settings_notes_format": "Podrazumevani formar"
+    "settings_notes_format": "Podrazumevani format",
+    "settings_notes_format_description": "Odaberite podrazumevani format za čuvanje Vaših beležaka. Imajte na umu da .fsen format omogućava oflajn saradnju na dokumentima."
 }
