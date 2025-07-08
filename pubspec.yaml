@@ -27,6 +27,8 @@ dev_dependencies:
   flutter_lints: ^3.0.1
 flutter:
   uses-material-design: true
+  assets:
+    - assets/lang/
 flutter_icons:
   android: true
   ios: false
