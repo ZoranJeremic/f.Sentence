@@ -52,6 +52,8 @@ We would love to have your contributions! Here’s how you can help:
 - Contribute to the source code (you can request contributor access or fork the repo)  
 - Share feedback and ideas  
 
+[![Translation status](https://hosted.weblate.org/widget/f-sentence/main/open-graph.png)](https://hosted.weblate.org/engage/f-sentence/)
+
 **Contribution rules:**  
 - Please respect our [Code of Conduct](CODE_OF_CONDUCT.md) (based on the Contributor Covenant)  
 - Discuss major changes before submitting large pull requests  
