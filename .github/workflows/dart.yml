@@ -23,13 +23,13 @@ permissions:
           #flutter-version: '3.29.0'
 
       #- name: Run flutter doctor
-        run: flutter doctor -v
+        #run: flutter doctor -v
 
       #- name: Get dependencies
-        run: flutter pub get
+        #run: flutter pub get
 
       #- name: Build APK
-        run: flutter build apk --release
+        #run: flutter build apk --release
 
       #- name: Upload APK artifact
         #uses: actions/upload-artifact@v4
