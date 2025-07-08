@@ -1,8 +1,8 @@
 {
-    "settings_theme": "",
-    "settings_theme_tooltip": "",
-    "settings_theme_mode": "",
-    "settings_theme_dark": "",
+    "settings_theme": "Θέμα",
+    "settings_theme_tooltip": "Προσαρμόστε την εμφάνιση και την αίσθηση της εφαρμογής.",
+    "settings_theme_mode": "Επιλογή λειτουργίας",
+    "settings_theme_dark": "Σκοτεινό",
     "settings_theme_light": "",
     "settings_theme_accent_color": "",
     "settings_theme_white": "",
