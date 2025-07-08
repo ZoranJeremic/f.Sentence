@@ -289,5 +289,20 @@
     "settings_theme_dynamic": "Dinamično (zahteva Android 12 ili noviji)",
     "settings_documents_format": "Odaberite podrazumevani format",
     "settings_documents_format_odt": ".odt",
-    "settings_documents_dark_theme_inside": "Tamni režim unutar dokumenta"
+    "settings_documents_dark_theme_inside": "Tamni režim unutar dokumenta",
+    "settings_theme_tooltip": "Personalizujte izgled i osećaj aplikacije.",
+    "settings_documents": "Podešavanja dokumenata",
+    "settings_documents_description": "Promenite svoja podešavanja dokumenata.",
+    "settings_documents_format_description": "Odaberite podrazumevani format za čuvanje Vaših dokumenata. Imajte na umu da .fdoc format omogućava oflajn saradnju na dokumentima.",
+    "settings_documents_dark_theme_inside_description": "Kada je ovo podešavanje uključeno, dokumenti se prikazuju u tamnom režimu. ",
+    "settings_documents_dark_theme_on": "Uključeno",
+    "settings_documents_dark_theme_off": "Isključeno",
+    "settings_documents_view": "Podrazumevani prikaz",
+    "settings_documents_view_description": "Odaberite kako se vaši dokumenti prikazuju.",
+    "settings_documents_view_mobile": "Mobilni prikaz",
+    "settings_documents_view_desktop": "Desktop prikaz",
+    "settings_notes": "Podešavanja beležaka",
+    "settings_notes_description": "Promenite svoja podešavanja beležaka.",
+    "settings_notes_format": "Podrazumevani format",
+    "settings_notes_format_description": "Odaberite podrazumevani format za čuvanje Vaših beležaka. Imajte na umu da .fsen format omogućava oflajn saradnju na dokumentima."
 }
