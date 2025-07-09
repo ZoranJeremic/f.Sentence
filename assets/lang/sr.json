@@ -326,5 +326,18 @@
     "settings_whiteboards_description": "Promenite svoja podešavanja bele table. ",
     "settings_whiteboards_theme": "Izgled bele table se slaže sa izgledom aplikacije",
     "settings_whiteboards_theme_description": "Učinite da se vaše bele table prikazuju u tamnom režimu. Ovo ne utiče na štampanje, deljenje ili saradnju. ",
-    "settings_whiteboards_format": "Podrazumevani format"
+    "settings_whiteboards_format": "Podrazumevani format",
+    "settings_accessibility_tritanomaly": "Tritanomalija",
+    "settings_accessibility_remove_animations": "Onemogućite animacije",
+    "settings_trash": "Podešavanja kante za otpatke",
+    "settings_trash_preferences": "Promenite svoja podešavanja kante za otpatke. ",
+    "settings_trash_auto_delete": "Obrišite automatski nakon",
+    "settings_trash_custom": "Ručno odaberite količinu vremena",
+    "settings_about": "O aplikaciji",
+    "settings_about_description": "Linkovi, licence itd. ",
+    "settings_about_version": "­Verzija",
+    "settings_about_open_source": "Licence otvorenog koda",
+    "settings_about_license": "Licenca aplikacije",
+    "settings_about_license_description": "GNU Generalna Javna Licenca v3.0",
+    "settings_about_copyright": "©2025 Flake."
 }
