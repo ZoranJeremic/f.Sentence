@@ -445,5 +445,10 @@
     "documents_destination": "Destinacija",
     "documents_size": "Veličina",
     "documents_format": "Format",
-    "documents_date_created": "Datum pravljrnja"
+    "documents_date_created": "Datum pravljenja",
+    "documents_modified": "Modifikovano",
+    "documents_add_to_home": "Dodajte na početni ekran",
+    "documents_help": "Pomoć",
+    "documents_change_case": "Promenite stil pisanja",
+    "documents_sentence_case": "Prvo slovo veliko."
 }
