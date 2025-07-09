@@ -339,5 +339,11 @@
     "settings_about_open_source": "Licence otvorenog koda",
     "settings_about_license": "Licenca aplikacije",
     "settings_about_license_description": "GNU Generalna Javna Licenca v3.0",
-    "settings_about_copyright": "©2025 Flake."
+    "settings_about_copyright": "©2025 Flake",
+    "settings_about_links": "Linkovi",
+    "settings_about_links_description": "GitHub, Reddit, XDA itd.",
+    "settings_additional": "Dodatno",
+    "settings_additional_description": "Jezik i rezervne kopije",
+    "settings_additional_language": "Jezik",
+    "settings_additional_restore": "Povratak na podrazumevana podesavanja"
 }
