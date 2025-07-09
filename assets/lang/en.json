@@ -87,7 +87,7 @@
   "settings_accessibility": "Accessibility", 
   "settings_accessibility_description": "Make app's interface more accessible to you.", 
   "settings_accessibility_high_contrast": "High contrast themes",
-  "settings_accessibility_high_contrast": "Enable themes designed for users with low vision or sensitivity to colors. Increases contrast between text and background for better readability.", 
+  "settings_accessibility_high_contrast_description": "Enable themes designed for users with low vision or sensitivity to colors. Increases contrast between text and background for better readability.", 
   "settings_accessibility_contrast_blue": "Blue text on black background",
   "settings_accessibility_contrast_yellow": "Yellow text on black background",
   "settings_accessibility_font_size": "Increase font size",
