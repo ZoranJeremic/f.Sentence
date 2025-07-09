@@ -14,7 +14,6 @@
   "settings_theme_blue": "Blue",
   "settings_theme_monochrome": "Monochrome",
   "settings_theme_dynamic": "Dynamic (Android 12+)",
-
   "settings_documents": "Documents settings", 
   "settings_documents_description": "Change your documents preferences.", 
   "settings_documents_format": "Select default format",
@@ -342,7 +341,7 @@
   "pdf_highlight_search": "Highlight search results",
   "pdf_version_history": "Version history",
   "pdf_file_info": "File info",
-  "pdf_add_to_home": "Add to home screen shortcut"
+  "pdf_add_to_home": "Add to home screen shortcut", 
   "restore": "Restore",
   "trash": "Trash", 
   "delete_permanently": "Delete permanently",
