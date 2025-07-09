@@ -343,8 +343,8 @@
   "pdf_version_history": "Version history",
   "pdf_file_info": "File info",
   "pdf_add_to_home": "Add to home screen shortcut"
-
   "restore": "restore",
+  "trash": "trash", 
   "delete_permanently": "delete_permanently",
   "are_you_sure" :"Are you sure?",
   "delete_permanently_description": "This action is permanent. ", 
