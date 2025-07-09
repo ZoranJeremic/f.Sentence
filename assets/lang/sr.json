@@ -305,5 +305,9 @@
     "settings_notes_description": "Promenite svoja podešavanja beležaka.",
     "settings_notes_format": "Podrazumevani format",
     "settings_notes_format_description": "Odaberite podrazumevani format za čuvanje Vaših beležaka. Imajte na umu da .fsen format omogućava oflajn saradnju na dokumentima.",
-    "settings_drawings": "Podešavanja platna"
+    "settings_drawings": "Podešavanja platna za crtanje",
+    "settings_drawings_description": "Personalizujte svoje platno za crtanje. ",
+    "settings_drawings_brush": "Podrazumevana četkica",
+    "settings_drawings_brush_description": "Odaberite podrazumevanu četkicu koja će se koristiti pri ulasku u platno za crtanje.",
+    "settings_drawings_format": "Podrazumevani formar"
 }
