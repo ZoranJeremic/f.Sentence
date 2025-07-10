@@ -506,5 +506,19 @@
     "delete_permanently": "Obrišite zauvek",
     "are_you_sure": "Da li ste sigurni?",
     "delete_permanently_description": "Ova operacija je neopoziva. ",
-    "restore_ask": "Da li ste sigurni da zelite da povratite ovaj fajl?"
+    "restore_ask": "Da li ste sigurni da želite da povratite ovaj fajl?",
+    "delete_ask": "Da li ste sigurni da želite da obrišete ovaj fajl?",
+    "delete_ask_description": "Sve što je u kanti za otpatke će biti trajno obrisano nakon 30 dana.",
+    "delete_confirm": "Datoteka obrisana.",
+    "restore_confirm": "Povratili ste datoteku.",
+    "action_cancelled": "Operacija otkazana.",
+    "archive": "Arhiva",
+    "app_store_title": "Više od procesora teksta.",
+    "app_store_description_1": "f.Sentence je sve-u-jednom aplikacija za produktivnost koja poštuje tvoju privatnost. Omogućava uređivanje dokumenata, pravljenje beležaka, čitanje i označavanje PDF fajlova, kao i rad na belim tablama i crtanje. Radi na Androidu, Windowsu i macOS-u, a dizajnirana je da bude brza i jednostavna za upotrebu.",
+    "app_store_description_2": "Napravljena za učenike, kreativce i profesionalce, f.Sentence donosi ozbiljne alatke za produktivnost svima, bez cene i kompromisa.",
+    "app_store_description_3": "Ključne funkcije:",
+    "app_store_description_4": "Puna podrška za uređivanje dokumenata sa alatima za formatiranje teksta",
+    "app_store_description_5": "Pisanje beležaka sa podrškom za obogaćeni tekst i Markdown",
+    "app_store_description_6": "PDF čitač sa podrškom za anotiranje, markiranje, potpisivanje i još mnogo toga",
+    "app_store_description_7": "Alati za crtanje sa širokim izborom četkica"
 }
