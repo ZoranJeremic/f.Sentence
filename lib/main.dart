@@ -33,7 +33,7 @@ class MainAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('f.Sentence')),
-      body: Center(child: Text('Ovo je glavni sadržaj aplikacije')),
+      body: Center(child: Text('Coming soon! ')),
     );
   }
 }
