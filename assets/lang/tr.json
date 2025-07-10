@@ -332,5 +332,14 @@
     "restore": "Eski haline getirmek",
     "trash": "Çöp",
     "delete_permanently": "Kalıcı olarak sil",
-    "are_you_sure": "Emin misin"
+    "are_you_sure": "Emin misin?",
+    "delete_permanently_description": "Bu eylem kalıcıdır. ",
+    "restore_ask": "Geri yüklemek istediğinizden emin misiniz?",
+    "delete_ask": "Bunu silmek istediğinizden emin misiniz?",
+    "delete_ask_description": "Sildiğiniz her şey 30 gün sonra kalıcı olarak silinecektir.",
+    "delete_confirm": "Dosya silindi.",
+    "restore_confirm": "Dosya geri yüklendi.",
+    "action_cancelled": "İşlem iptal edildi.",
+    "archive": "arşiv",
+    "app_store_title": "Metin düzenleyicisinden daha fazlasıç"
 }
