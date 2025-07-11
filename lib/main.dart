@@ -1,68 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'onboarding.dart'; // Uvozimo naš onboarding
-// import 'home.dart';  // Tvoj pravi glavni ekran kad ga napraviš
+import 'onboarding.dart'; // Važno: obavezno importuj svoj onboarding fajl
 
 void main() {
-  runApp(const SentenceApp());
+  runApp(const MyApp());
 }
 
-class SentenceApp extends StatefulWidget {
-  const SentenceApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  @override
-  State<SentenceApp> createState() => _SentenceAppState();
-}
-
-class _SentenceAppState extends State<SentenceApp> {
-  bool _onboardingComplete = false;
-  bool _isDarkTheme = false;
-  Color _accentColor = Colors.blue;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadPreferences();
-  }
-
-  Future<void> _loadPreferences() async {
+  Future<bool> _checkOnboardingComplete() async {
     final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
-      _isDarkTheme = prefs.getBool('is_dark_theme') ?? false;
-      _accentColor = _parseAccentColor(prefs.getString('accent_color')) ?? Colors.blue;
-    });
-  }
-
-  // Ako želiš da boju sačuvaš kao string (npr. "#FF0000"), ovo ti pomaže
-  Color? _parseAccentColor(String? colorString) {
-    if (colorString == null) return null;
-    try {
-      return Color(int.parse(colorString.replaceFirst('#', '0xff')));
-    } catch (_) {
-      return null;
-    }
+    return prefs.getBool('onboarding_complete') ?? false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'f.Sentence',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: _accentColor,
-        brightness: Brightness.light,
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: _accentColor,
-        brightness: Brightness.dark,
-      ),
-      themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
-      home: _onboardingComplete ? const MainScreen() : const OnboardingScreen(),
-      routes: {
-        '/main': (context) => const MainScreen(),
+    return FutureBuilder<bool>(
+      future: _checkOnboardingComplete(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const MaterialApp(
+            home: Scaffold(body: Center(child: CircularProgressIndicator())),
+          );
+        }
+
+        final onboardingComplete = snapshot.data!;
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'f.Sentence',
+          initialRoute: onboardingComplete ? '/main' : '/onboarding',
+          routes: {
+            '/onboarding': (context) => const OnboardingScreen(),
+            '/main': (context) => const MainScreen(),
+          },
+        );
       },
     );
   }
@@ -73,12 +45,12 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('f.Sentence'),
-      ),
-      body: const Center(
-        child: Text('This is your main app screen!'),
+    return const Scaffold(
+      body: Center(
+        child: Text(
+          'Welcome to f.Sentence main screen!',
+          style: TextStyle(fontSize: 24),
+        ),
       ),
     );
   }
