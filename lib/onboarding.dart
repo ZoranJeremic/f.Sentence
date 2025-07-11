@@ -43,7 +43,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await prefs.setBool('onboarding_complete', true);
     await prefs.setBool('is_dark_theme', _isDarkTheme);
     await prefs.setString('language_code', _getLanguageCode(_selectedLanguage));
-    Navigator.of(context).pushReplacementNamed('/main'); // Glavni ekran
+    Navigator.of(context).pushReplacementNamed('/main');
   }
 
   String _getLanguageCode(String lang) {
@@ -96,8 +96,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildWelcomePage() => _buildPage(
         title: 'Welcome to f.Sentence!',
-        subtitle:
-            'Your new creative workspace — fast, private, and offline-ready.',
+        subtitle: 'Your new creative workspace — fast, private, and offline-ready.',
       );
 
   Widget _buildLanguagePage() => _buildPage(
@@ -156,8 +155,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildFinishPage() => _buildPage(
         title: "You're Ready!",
-        subtitle:
-            'Tap below to start writing, drawing, or brainstorming.',
+        subtitle: 'Tap below to start writing, drawing, or brainstorming.',
         buttonText: 'Get Started',
       );
 
@@ -175,8 +173,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Text(
               title,
-              style:
-                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
