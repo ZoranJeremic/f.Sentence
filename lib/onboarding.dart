@@ -43,7 +43,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await prefs.setBool('onboarding_complete', true);
     await prefs.setBool('is_dark_theme', _isDarkTheme);
     await prefs.setString('language_code', _getLanguageCode(_selectedLanguage));
-    Navigator.of(context).pushReplacementNamed('/main');
+    Navigator.of(context).pushReplacementNamed('/main'); // Glavni ekran
   }
 
   String _getLanguageCode(String lang) {
@@ -96,7 +96,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildWelcomePage() => _buildPage(
         title: 'Welcome to f.Sentence!',
-        subtitle: 'Your new creative workspace — fast, private, and offline-ready.',
+        subtitle:
+            'Your new creative workspace — fast, private, and offline-ready.',
       );
 
   Widget _buildLanguagePage() => _buildPage(
@@ -105,13 +106,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: DropdownButton<String>(
           value: _selectedLanguage,
           onChanged: (value) async {
-            setState(() => _selectedLanguage = value!);
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setString('language_code', _getLanguageCode(value));
+            if (value != null) {
+              setState(() => _selectedLanguage = value);
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.setString('language_code', _getLanguageCode(value));
+            }
           },
-          items: ['English', 'Српски', 'Türkçe', 'Español', 'Deutsch'].map((lang) {
-            return DropdownMenuItem(value: lang, child: Text(lang));
-          }).toList(),
+          items: ['English', 'Српски', 'Türkçe', 'Español', 'Deutsch']
+              .map((lang) => DropdownMenuItem(
+                    value: lang,
+                    child: Text(lang),
+                  ))
+              .toList(),
         ),
       );
 
@@ -150,7 +156,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildFinishPage() => _buildPage(
         title: "You're Ready!",
-        subtitle: 'Tap below to start writing, drawing, or brainstorming.',
+        subtitle:
+            'Tap below to start writing, drawing, or brainstorming.',
         buttonText: 'Get Started',
       );
 
@@ -166,10 +173,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(title,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Text(
+              title,
+              style:
+                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 16),
-            Text(subtitle, textAlign: TextAlign.center),
+            Text(
+              subtitle,
+              textAlign: TextAlign.center,
+            ),
             if (child != null) ...[
               const SizedBox(height: 24),
               child,
