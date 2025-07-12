@@ -1,45 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'onboarding.dart'; // Obavezno: da imaš ovaj fajl u lib/
+import 'onboarding.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final prefs = await SharedPreferences.getInstance();
+  final onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+
+  runApp(MyApp(onboardingComplete: onboardingComplete));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool onboardingComplete;
 
-  Future<bool> _checkOnboardingComplete() async {
-    final prefs = await SharedPreferences.getInstance();
-    final completed = prefs.getBool('onboarding_complete') ?? false;
-    debugPrint('Onboarding complete: $completed');
-    return completed;
-  }
+  const MyApp({super.key, required this.onboardingComplete});
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _checkOnboardingComplete(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const MaterialApp(
-            home: Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            ),
-          );
-        }
-
-        final onboardingComplete = snapshot.data ?? false;
-
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'f.Sentence',
-          initialRoute: onboardingComplete ? '/main' : '/onboarding',
-          routes: {
-            '/onboarding': (context) => const OnboardingScreen(),
-            '/main': (context) => const MainScreen(),
-          },
-        );
+    return MaterialApp(
+      title: 'f.Sentence',
+      debugShowCheckedModeBanner: false,
+      initialRoute: onboardingComplete ? '/main' : '/onboarding',
+      routes: {
+        '/onboarding': (context) => const OnboardingScreen(),
+        '/main': (context) => const MainScreen(),
       },
     );
   }
