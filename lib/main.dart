@@ -38,7 +38,7 @@ class MainScreen extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: Text(
-          'Dobrodošao nazad u f.Sentence!',
+          'Under construction',
           style: TextStyle(fontSize: 24),
         ),
       ),
