@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'onboarding.dart'; // Važno: obavezno importuj svoj onboarding fajl
+import 'onboarding.dart'; // Obavezno: da imaš ovaj fajl u lib/
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +11,9 @@ class MyApp extends StatelessWidget {
 
   Future<bool> _checkOnboardingComplete() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('onboarding_complete') ?? false;
+    final completed = prefs.getBool('onboarding_complete') ?? false;
+    debugPrint('Onboarding complete: $completed');
+    return completed;
   }
 
   @override
@@ -19,13 +21,16 @@ class MyApp extends StatelessWidget {
     return FutureBuilder<bool>(
       future: _checkOnboardingComplete(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.connectionState != ConnectionState.done) {
           return const MaterialApp(
-            home: Scaffold(body: Center(child: CircularProgressIndicator())),
+            home: Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            ),
           );
         }
 
-        final onboardingComplete = snapshot.data!;
+        final onboardingComplete = snapshot.data ?? false;
+
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'f.Sentence',
@@ -48,7 +53,7 @@ class MainScreen extends StatelessWidget {
     return const Scaffold(
       body: Center(
         child: Text(
-          'Welcome to f.Sentence main screen!',
+          'Dobrodošao nazad u f.Sentence!',
           style: TextStyle(fontSize: 24),
         ),
       ),
