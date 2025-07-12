@@ -1,47 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'onboarding.dart';
+import 'onboarding.dart'; // obavezno da fajl postoji
+import 'home.dart'; // tvoja glavna aplikacija
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
-  final onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
+  final bool isDarkTheme = prefs.getBool('is_dark_theme') ?? false;
+  final bool onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
 
-  runApp(MyApp(onboardingComplete: onboardingComplete));
+  // Podešavanje system bar-ova (navigation + status bar)
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: isDarkTheme ? Colors.black : Colors.white,
+    systemNavigationBarIconBrightness:
+        isDarkTheme ? Brightness.light : Brightness.dark,
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness:
+        isDarkTheme ? Brightness.light : Brightness.dark,
+  ));
+
+  runApp(MyApp(
+    isDarkTheme: isDarkTheme,
+    onboardingComplete: onboardingComplete,
+  ));
 }
 
 class MyApp extends StatelessWidget {
+  final bool isDarkTheme;
   final bool onboardingComplete;
 
-  const MyApp({super.key, required this.onboardingComplete});
+  const MyApp({
+    super.key,
+    required this.isDarkTheme,
+    required this.onboardingComplete,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'f.Sentence',
+      title: 'Under construction 🚧',
       debugShowCheckedModeBanner: false,
-      initialRoute: onboardingComplete ? '/main' : '/onboarding',
-      routes: {
-        '/onboarding': (context) => const OnboardingScreen(),
-        '/main': (context) => const MainScreen(),
-      },
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Under construction',
-          style: TextStyle(fontSize: 24),
-        ),
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.light,
       ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black, // AMOLED crna
+      ),
+      themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
+      initialRoute: onboardingComplete ? '/main' : '/',
+      routes: {
+        '/': (context) => const OnboardingScreen(),
+        '/main': (context) => const HomeScreen(),
+      },
     );
   }
 }
