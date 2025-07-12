@@ -16,6 +16,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool _isDarkTheme = false;
   Color _accentColor = Colors.blue;
 
+  // Dodao sam još boja, plus razmak između redova
   final List<Color> accentColors = [
     Colors.white,
     Colors.yellow,
@@ -25,7 +26,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Colors.green,
     Colors.blue,
     Colors.grey,
+    Colors.teal,
+    Colors.deepPurple,
+    Colors.brown,
+    Colors.cyan,
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
+
+  Future<void> _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedLanguage = _getLanguageName(prefs.getString('language_code') ?? 'en');
+      _isDarkTheme = prefs.getBool('is_dark_theme') ?? false;
+      int savedColorIndex = prefs.getInt('accent_color_index') ?? 6; // default blue index
+      if (savedColorIndex >= 0 && savedColorIndex < accentColors.length) {
+        _accentColor = accentColors[savedColorIndex];
+      } else {
+        _accentColor = Colors.blue;
+      }
+    });
+  }
 
   void _nextPage() {
     if (_currentPage < 3) {
@@ -43,7 +68,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await prefs.setBool('onboarding_complete', true);
     await prefs.setBool('is_dark_theme', _isDarkTheme);
     await prefs.setString('language_code', _getLanguageCode(_selectedLanguage));
-    Navigator.of(context).pushReplacementNamed('/main');
+    await prefs.setInt('accent_color_index', accentColors.indexOf(_accentColor));
+    Navigator.of(context).pushReplacementNamed('/main'); // Idi na glavni ekran
   }
 
   String _getLanguageCode(String lang) {
@@ -63,6 +89,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
+  String _getLanguageName(String code) {
+    switch (code) {
+      case 'en':
+        return 'English';
+      case 'sr':
+        return 'Српски';
+      case 'tr':
+        return 'Türkçe';
+      case 'es':
+        return 'Español';
+      case 'de':
+        return 'Deutsch';
+      default:
+        return 'English';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -77,6 +120,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         useMaterial3: true,
         colorSchemeSeed: _accentColor,
         brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black, // Pitch black za tamnu temu
+        colorScheme: ColorScheme.fromSeed(seedColor: _accentColor, brightness: Brightness.dark),
       ),
       themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
       home: Scaffold(
@@ -134,11 +179,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 await prefs.setBool('is_dark_theme', value);
               },
             ),
+            const SizedBox(height: 12),
             Wrap(
               spacing: 10,
-              children: accentColors.map((color) {
+              runSpacing: 12, // Razmak između redova
+              children: accentColors.asMap().entries.map((entry) {
+                int idx = entry.key;
+                Color color = entry.value;
                 return GestureDetector(
-                  onTap: () => setState(() => _accentColor = color),
+                  onTap: () async {
+                    setState(() => _accentColor = color);
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.setInt('accent_color_index', idx);
+                  },
                   child: CircleAvatar(
                     backgroundColor: color,
                     radius: 20,
@@ -173,7 +226,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style:
+                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
