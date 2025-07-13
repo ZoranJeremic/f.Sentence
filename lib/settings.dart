@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'theme_settings.dart'; // sledeće kreiramo
-// Dodaj i ostale kad budu spremni...
+import 'theme_settings.dart';
+// Ovde kasnije importuj ostale ekrane: documents_settings.dart itd.
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -12,23 +12,70 @@ class SettingsScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildCategory(context, 'Theme', const ThemeSettingsScreen()),
-          _buildCategory(context, 'Documents preferences'),
-          _buildCategory(context, 'Notes preferences'),
-          _buildCategory(context, 'Drawings preferences'),
-          _buildCategory(context, 'PDF preferences'),
-          _buildCategory(context, 'Whiteboards preferences'),
-          _buildCategory(context, 'Accessibility'),
-          _buildCategory(context, 'Trash preferences'),
-          _buildCategory(context, 'About app'),
-          _buildCategory(context, 'Additional'),
+          _buildCategory(
+            context,
+            icon: Icons.color_lens_outlined,
+            title: 'Theme',
+            screen: const ThemeSettingsScreen(),
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.description_outlined,
+            title: 'Documents preferences',
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.note_alt_outlined,
+            title: 'Notes preferences',
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.brush_outlined,
+            title: 'Drawings preferences',
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.picture_as_pdf_outlined,
+            title: 'PDF preferences',
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.dashboard_customize_outlined,
+            title: 'Whiteboards preferences',
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.accessibility_new_outlined,
+            title: 'Accessibility',
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.delete_outline,
+            title: 'Trash preferences',
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.info_outline,
+            title: 'About app',
+          ),
+          _buildCategory(
+            context,
+            icon: Icons.settings_backup_restore_outlined,
+            title: 'Additional',
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildCategory(BuildContext context, String title, [Widget? screen]) {
+  Widget _buildCategory(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    Widget? screen,
+  }) {
     return ListTile(
+      leading: Icon(icon),
       title: Text(title),
       trailing: const Icon(Icons.chevron_right),
       onTap: screen != null
@@ -38,7 +85,7 @@ class SettingsScreen extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => screen),
               );
             }
-          : null, // ako nema još ekrana, ne radi ništa
+          : null,
     );
   }
 }
