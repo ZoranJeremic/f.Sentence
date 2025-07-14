@@ -1,10 +1,11 @@
 name: Sentence
-description: A Flutter app for managing documents and notes.
+description: More than text editor. 
 version: 1.0.1+1
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
 dependencies:
+  easy_localization: ^3.0.7+1
   dynamic_color: ^1.7.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
