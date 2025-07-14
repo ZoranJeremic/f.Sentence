@@ -1,64 +1,89 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'onboarding.dart'; // obavezno da fajl postoji
-import 'home.dart'; // tvoja glavna aplikacija
+import 'package:easy_localization/easy_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
-  final bool isDarkTheme = prefs.getBool('is_dark_theme') ?? false;
-  final bool onboardingComplete = prefs.getBool('onboarding_complete') ?? false;
 
-  // Podešavanje system bar-ova (navigation + status bar)
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: isDarkTheme ? Colors.black : Colors.white,
-    systemNavigationBarIconBrightness:
-        isDarkTheme ? Brightness.light : Brightness.dark,
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness:
-        isDarkTheme ? Brightness.light : Brightness.dark,
-  ));
+  // Učitavamo podešavanja
+  final isDarkTheme = prefs.getBool('is_dark_theme') ?? false;
+  final languageCode = prefs.getString('language_code') ?? 'en';
+  final accentColorIndex = prefs.getInt('accent_color_index') ?? 6;
 
-  runApp(MyApp(
-    isDarkTheme: isDarkTheme,
-    onboardingComplete: onboardingComplete,
-  ));
+  final accentColors = [
+    Colors.white,
+    Colors.yellow,
+    Colors.pink,
+    Colors.orange,
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.grey,
+    Colors.teal,
+    Colors.deepPurple,
+    Colors.brown,
+    Colors.cyan,
+  ];
+  final Color accentColor = accentColors[accentColorIndex];
+
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('en'),
+        Locale('sr'),
+        Locale('tr'),
+        Locale('es'),
+        Locale('de'),
+      ],
+      path: 'lang',
+      fallbackLocale: const Locale('en'),
+      startLocale: Locale(languageCode),
+      child: MyApp(
+        isDarkTheme: isDarkTheme,
+        accentColor: accentColor,
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   final bool isDarkTheme;
-  final bool onboardingComplete;
+  final Color accentColor;
 
   const MyApp({
     super.key,
     required this.isDarkTheme,
-    required this.onboardingComplete,
+    required this.accentColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Under construction 🚧',
+      title: 'f.Sentence',
       debugShowCheckedModeBanner: false,
+      themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
         brightness: Brightness.light,
+        colorSchemeSeed: accentColor,
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black, // AMOLED crna
+        scaffoldBackgroundColor: Colors.black, // AMOLED black
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: accentColor,
+          brightness: Brightness.dark,
+        ),
       ),
-      themeMode: isDarkTheme ? ThemeMode.dark : ThemeMode.light,
-      initialRoute: onboardingComplete ? '/main' : '/',
-      routes: {
-        '/': (context) => const OnboardingScreen(),
-        '/main': (context) => const HomeScreen(),
-      },
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      builder: (context, child) => SafeArea(child: child!),
+      home: const Placeholder(), // OVO ZAMENJUJEŠ KASNIJE sa svojim Home/onboarding screenom
     );
   }
 }
