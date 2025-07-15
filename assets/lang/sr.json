@@ -568,4 +568,8 @@
     "drawings_brush_flat": "Ravna četkica",
     "drawings_brush_bright": "Svetla četkica",
     "drawings_brush_filbert": "Filbert četkica"
+
+    "onboarding_welcome": "Dobrodosli u f.Sentence! ",
+    "onboarding_language": "Odaberite jezik",
+    "onboarding_done": "Spremni ste!"
 }
