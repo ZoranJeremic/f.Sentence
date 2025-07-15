@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -7,12 +8,12 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('f.Sentence'),
+        title: Text('settings_theme'.tr()),
       ),
-      body: const Center(
+      body: Center(
         child: Text(
-          'Welcome to f.Sentence!',
-          style: TextStyle(fontSize: 20),
+          'settings_theme_tooltip'.tr(),
+          style: const TextStyle(fontSize: 18),
         ),
       ),
     );
