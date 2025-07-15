@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -16,7 +17,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool _isDarkTheme = false;
   Color _accentColor = Colors.blue;
 
-  // Dodao sam još boja, plus razmak između redova
   final List<Color> accentColors = [
     Colors.white,
     Colors.yellow,
@@ -32,6 +32,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Colors.cyan,
   ];
 
+  final Map<String, String> languageMap = {
+    'English': 'en',
+    'Српски': 'sr',
+    'Türkçe': 'tr',
+    'Español': 'es',
+    'Deutsch': 'de',
+  };
+
   @override
   void initState() {
     super.initState();
@@ -41,23 +49,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _selectedLanguage = _getLanguageName(prefs.getString('language_code') ?? 'en');
+      String langCode = prefs.getString('language_code') ?? 'en';
+      _selectedLanguage = languageMap.entries.firstWhere(
+        (e) => e.value == langCode,
+        orElse: () => const MapEntry('English', 'en'),
+      ).key;
+
       _isDarkTheme = prefs.getBool('is_dark_theme') ?? false;
-      int savedColorIndex = prefs.getInt('accent_color_index') ?? 6; // default blue index
+      int savedColorIndex = prefs.getInt('accent_color_index') ?? 6;
       if (savedColorIndex >= 0 && savedColorIndex < accentColors.length) {
         _accentColor = accentColors[savedColorIndex];
       } else {
         _accentColor = Colors.blue;
       }
     });
+
+    // Promeni locale easy_localization na izabrani jezik
+    await context.setLocale(Locale(languageMap[_selectedLanguage]!));
   }
 
   void _nextPage() {
     if (_currentPage < 3) {
-      _controller.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
+      _controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
     } else {
       _finishOnboarding();
     }
@@ -67,122 +80,83 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('onboarding_complete', true);
     await prefs.setBool('is_dark_theme', _isDarkTheme);
-    await prefs.setString('language_code', _getLanguageCode(_selectedLanguage));
+    await prefs.setString('language_code', languageMap[_selectedLanguage]!);
     await prefs.setInt('accent_color_index', accentColors.indexOf(_accentColor));
-    Navigator.of(context).pushReplacementNamed('/main'); // Idi na glavni ekran
-  }
 
-  String _getLanguageCode(String lang) {
-    switch (lang) {
-      case 'English':
-        return 'en';
-      case 'Српски':
-        return 'sr';
-      case 'Türkçe':
-        return 'tr';
-      case 'Español':
-        return 'es';
-      case 'Deutsch':
-        return 'de';
-      default:
-        return 'en';
-    }
-  }
+    // Postavi lokalizaciju kad završavaš
+    await context.setLocale(Locale(languageMap[_selectedLanguage]!));
 
-  String _getLanguageName(String code) {
-    switch (code) {
-      case 'en':
-        return 'English';
-      case 'sr':
-        return 'Српски';
-      case 'tr':
-        return 'Türkçe';
-      case 'es':
-        return 'Español';
-      case 'de':
-        return 'Deutsch';
-      default:
-        return 'English';
-    }
+    Navigator.of(context).pushReplacementNamed('/main');
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'f.Sentence',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: _accentColor,
-        brightness: Brightness.light,
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: _accentColor,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black, // Pitch black za tamnu temu
-        colorScheme: ColorScheme.fromSeed(seedColor: _accentColor, brightness: Brightness.dark),
-      ),
-      themeMode: _isDarkTheme ? ThemeMode.dark : ThemeMode.light,
-      home: Scaffold(
-        body: PageView(
-          controller: _controller,
-          onPageChanged: (index) => setState(() => _currentPage = index),
-          children: [
-            _buildWelcomePage(),
-            _buildLanguagePage(),
-            _buildThemePage(),
-            _buildFinishPage(),
-          ],
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        color: _accentColor,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: PageView(
+              controller: _controller,
+              onPageChanged: (index) => setState(() => _currentPage = index),
+              children: [
+                _buildWelcomePage(),
+                _buildLanguagePage(),
+                _buildThemePage(),
+                _buildFinishPage(),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildWelcomePage() => _buildPage(
-        title: 'Welcome to f.Sentence!',
-        subtitle: 'Your new creative workspace — fast, private, and offline-ready.',
+        title: 'app_store_title'.tr(),
+        subtitle: 'app_store_description_1'.tr(),
       );
 
   Widget _buildLanguagePage() => _buildPage(
-        title: 'Choose Language',
-        subtitle: 'You can change this later in Settings.',
+        title: 'settings_additional_language'.tr(),
+        subtitle: 'settings_additional_description'.tr(),
         child: DropdownButton<String>(
           value: _selectedLanguage,
           onChanged: (value) async {
             if (value != null) {
               setState(() => _selectedLanguage = value);
+              await context.setLocale(Locale(languageMap[value]!));
               final prefs = await SharedPreferences.getInstance();
-              await prefs.setString('language_code', _getLanguageCode(value));
+              await prefs.setString('language_code', languageMap[value]!);
             }
           },
-          items: ['English', 'Српски', 'Türkçe', 'Español', 'Deutsch']
-              .map((lang) => DropdownMenuItem(
-                    value: lang,
-                    child: Text(lang),
-                  ))
+          items: languageMap.keys
+              .map((lang) => DropdownMenuItem(value: lang, child: Text(lang)))
               .toList(),
         ),
       );
 
   Widget _buildThemePage() => _buildPage(
-        title: 'Choose Theme & Color',
-        subtitle: 'Customize the look of your app.',
+        title: 'settings_theme'.tr(),
+        subtitle: 'settings_theme_tooltip'.tr(),
         child: Column(
           children: [
             SwitchListTile(
-              title: const Text('Dark Theme (AMOLED)'),
+              title: Text('settings_theme_mode'.tr()),
               value: _isDarkTheme,
               onChanged: (value) async {
                 setState(() => _isDarkTheme = value);
                 final prefs = await SharedPreferences.getInstance();
                 await prefs.setBool('is_dark_theme', value);
               },
+              secondary: Icon(_isDarkTheme ? Icons.dark_mode : Icons.light_mode),
             ),
             const SizedBox(height: 12),
             Wrap(
               spacing: 10,
-              runSpacing: 12, // Razmak između redova
+              runSpacing: 12,
               children: accentColors.asMap().entries.map((entry) {
                 int idx = entry.key;
                 Color color = entry.value;
@@ -207,9 +181,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       );
 
   Widget _buildFinishPage() => _buildPage(
-        title: "You're Ready!",
-        subtitle: 'Tap below to start writing, drawing, or brainstorming.',
-        buttonText: 'Get Started',
+        title: 'app_store_description_2'.tr(),
+        subtitle: 'app_store_description_3'.tr(),
+        buttonText: 'settings_about'.tr(),
       );
 
   Widget _buildPage({
@@ -242,7 +216,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             const SizedBox(height: 48),
             ElevatedButton(
               onPressed: _nextPage,
-              child: Text(buttonText),
+              child: Text(buttonText.tr()),
             ),
           ],
         ),
