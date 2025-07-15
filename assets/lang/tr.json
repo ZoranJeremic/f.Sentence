@@ -361,4 +361,8 @@
     "app_store_description_17": "Topluluk sayesinde birden fazla dilde mevcuttur. Kullanıcılar Weblate aracılığıyla çevirilere katkıda bulunabilirler.",
     "app_store_description_18": "Uyumluluk:",
     "app_store_description_19": "Android 5 veya üzeri"
+
+    "onboarding_welcome": "Welcome to f.Sentence!",
+    "onboarding_language": "Select your language",
+    "onboarding_done": "You're all done!"
 }
