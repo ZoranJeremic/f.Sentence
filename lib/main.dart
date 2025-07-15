@@ -1,35 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'home.dart';
 import 'onboarding.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
+  final prefs = await SharedPreferences.getInstance();
+  final completed = prefs.getBool('onboarding_complete') ?? false;
+
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('sr'), Locale('de'), Locale('es'), Locale('tr')],
+      supportedLocales: const [Locale('en')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      child: const MyApp(),
+      child: MyApp(showHome: completed),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool showHome;
+
+  const MyApp({super.key, required this.showHome});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'f.Sentence',
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home: const OnboardingScreen(),
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
+      initialRoute: showHome ? '/main' : '/onboarding',
       routes: {
-        '/main': (context) => const HomeScreen(), // tvoj glavni ekran, stavi kako ti treba
+        '/main': (context) => const HomeScreen(),
+        '/onboarding': (context) => const OnboardingScreen(),
       },
     );
   }
