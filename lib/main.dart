@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       locale: context.locale,
       home: const OnboardingScreen(),
       routes: {
-        '/main': (context) => const MainScreen(), // tvoj glavni ekran, stavi kako ti treba
+        '/main': (context) => const HomeScreen(), // tvoj glavni ekran, stavi kako ti treba
       },
     );
   }
