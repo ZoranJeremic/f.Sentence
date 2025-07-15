@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -12,215 +13,215 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
   int _currentPage = 0;
+  String _selectedLanguageCode = 'en';
+  bool _darkMode = false;
+  bool _dynamicTheme = false;
 
-  String _selectedLanguage = 'English';
-  bool _isDarkTheme = false;
-  Color _accentColor = Colors.blue;
-
-  final List<Color> accentColors = [
-    Colors.white,
-    Colors.yellow,
+  final List<Color> _accentColors = [
+    Colors.red,
     Colors.pink,
     Colors.orange,
-    Colors.red,
+    Colors.yellow,
     Colors.green,
     Colors.blue,
-    Colors.grey,
-    Colors.teal,
-    Colors.deepPurple,
-    Colors.brown,
+    Colors.purple,
     Colors.cyan,
+    Colors.teal,
+    Colors.indigo,
   ];
-
-  final Map<String, String> languageMap = {
-    'English': 'en',
-    'Српски': 'sr',
-    'Türkçe': 'tr',
-    'Español': 'es',
-    'Deutsch': 'de',
-  };
 
   @override
   void initState() {
     super.initState();
-    _loadPreferences();
-  }
-
-  Future<void> _loadPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      String langCode = prefs.getString('language_code') ?? 'en';
-      _selectedLanguage = languageMap.entries.firstWhere(
-        (e) => e.value == langCode,
-        orElse: () => const MapEntry('English', 'en'),
-      ).key;
-
-      _isDarkTheme = prefs.getBool('is_dark_theme') ?? false;
-      int savedColorIndex = prefs.getInt('accent_color_index') ?? 6;
-      if (savedColorIndex >= 0 && savedColorIndex < accentColors.length) {
-        _accentColor = accentColors[savedColorIndex];
-      } else {
-        _accentColor = Colors.blue;
-      }
-    });
-
-    // Promeni locale easy_localization na izabrani jezik
-    await context.setLocale(Locale(languageMap[_selectedLanguage]!));
-  }
-
-  void _nextPage() {
-    if (_currentPage < 3) {
-      _controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-    } else {
-      _finishOnboarding();
-    }
-  }
-
-  Future<void> _finishOnboarding() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('onboarding_complete', true);
-    await prefs.setBool('is_dark_theme', _isDarkTheme);
-    await prefs.setString('language_code', languageMap[_selectedLanguage]!);
-    await prefs.setInt('accent_color_index', accentColors.indexOf(_accentColor));
-
-    // Postavi lokalizaciju kad završavaš
-    await context.setLocale(Locale(languageMap[_selectedLanguage]!));
-
-    Navigator.of(context).pushReplacementNamed('/main');
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final accentColor = theme.colorScheme.primary;
+
+    SystemChrome.setSystemUIOverlayStyle(
+      isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+    );
+
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        color: _accentColor,
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 600),
-            child: PageView(
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        top: false,
+        bottom: false,
+        child: Stack(
+          children: [
+            PageView(
               controller: _controller,
               onPageChanged: (index) => setState(() => _currentPage = index),
               children: [
-                _buildWelcomePage(),
-                _buildLanguagePage(),
-                _buildThemePage(),
-                _buildFinishPage(),
+                _buildWelcomePage(accentColor),
+                _buildLanguagePage(accentColor),
+                _buildAppearancePage(accentColor),
+                _buildDonePage(accentColor),
               ],
             ),
-          ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(4, (index) {
+                    final selected = index == _currentPage;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        height: 8,
+                        width: selected ? 24 : 8,
+                        decoration: BoxDecoration(
+                          color: selected ? accentColor : accentColor.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 20,
+              right: 20,
+              child: FloatingActionButton.extended(
+                onPressed: _onNextPressed,
+                label: Text('Next'.tr()),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildWelcomePage() => _buildPage(
-        title: 'app_store_title'.tr(),
-        subtitle: 'app_store_description_1'.tr(),
-      );
-
-  Widget _buildLanguagePage() => _buildPage(
-        title: 'settings_additional_language'.tr(),
-        subtitle: 'settings_additional_description'.tr(),
-        child: DropdownButton<String>(
-          value: _selectedLanguage,
-          onChanged: (value) async {
-            if (value != null) {
-              setState(() => _selectedLanguage = value);
-              await context.setLocale(Locale(languageMap[value]!));
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.setString('language_code', languageMap[value]!);
-            }
-          },
-          items: languageMap.keys
-              .map((lang) => DropdownMenuItem(value: lang, child: Text(lang)))
-              .toList(),
+  Widget _buildWelcomePage(Color accentColor) => Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Welcome to f.Sentence!'.tr(),
+              style: TextStyle(fontSize: 26, color: accentColor),
+            ),
+          ),
         ),
       );
 
-  Widget _buildThemePage() => _buildPage(
-        title: 'settings_theme'.tr(),
-        subtitle: 'settings_theme_tooltip'.tr(),
+  Widget _buildLanguagePage(Color accentColor) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SwitchListTile(
-              title: Text('settings_theme_mode'.tr()),
-              value: _isDarkTheme,
-              onChanged: (value) async {
-                setState(() => _isDarkTheme = value);
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setBool('is_dark_theme', value);
-              },
-              secondary: Icon(_isDarkTheme ? Icons.dark_mode : Icons.light_mode),
+            Text(
+              'Select your language'.tr(),
+              style: TextStyle(fontSize: 22, color: accentColor),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 20),
+            DropdownButtonFormField<String>(
+              value: _selectedLanguageCode,
+              decoration: const InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(50)))),
+              items: const [
+                DropdownMenuItem(value: 'en', child: Text('English')),
+                DropdownMenuItem(value: 'sr', child: Text('Српски')),
+                DropdownMenuItem(value: 'tr', child: Text('Türkçe')),
+              ],
+              onChanged: (value) async {
+                if (value != null) {
+                  setState(() => _selectedLanguageCode = value);
+                  await context.setLocale(Locale(value));
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('language', value);
+                }
+              },
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildAppearancePage(Color accentColor) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 100),
+            Text(
+              'Personalize appearance'.tr(),
+              style: TextStyle(fontSize: 22, color: accentColor),
+            ),
+            const SizedBox(height: 20),
             Wrap(
-              spacing: 10,
-              runSpacing: 12,
-              children: accentColors.asMap().entries.map((entry) {
-                int idx = entry.key;
-                Color color = entry.value;
+              spacing: 8,
+              runSpacing: 8,
+              children: _accentColors.map((color) {
                 return GestureDetector(
                   onTap: () async {
-                    setState(() => _accentColor = color);
                     final prefs = await SharedPreferences.getInstance();
-                    await prefs.setInt('accent_color_index', idx);
+                    await prefs.setInt('accent_color', _accentColors.indexOf(color));
                   },
-                  child: CircleAvatar(
-                    backgroundColor: color,
-                    radius: 20,
-                    child: _accentColor == color
-                        ? const Icon(Icons.check, color: Colors.black)
-                        : null,
+                  child: Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: color,
+                    ),
                   ),
                 );
               }).toList(),
             ),
+            const SizedBox(height: 20),
+            CheckboxListTile(
+              title: Text('settings_theme_dark'.tr()),
+              value: _darkMode,
+              onChanged: (val) async {
+                setState(() => _darkMode = val ?? false);
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('dark_mode', _darkMode);
+              },
+            ),
+            CheckboxListTile(
+              title: Text('settings_theme_dynamic'.tr()),
+              value: _dynamicTheme,
+              onChanged: (val) async {
+                setState(() => _dynamicTheme = val ?? false);
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setBool('dynamic_theme', _dynamicTheme);
+              },
+            ),
           ],
         ),
       );
 
-  Widget _buildFinishPage() => _buildPage(
-        title: 'app_store_description_2'.tr(),
-        subtitle: 'app_store_description_3'.tr(),
-        buttonText: 'settings_about'.tr(),
+  Widget _buildDonePage(Color accentColor) => Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'You are all done!'.tr(),
+              style: TextStyle(fontSize: 24, color: accentColor),
+            ),
+          ),
+        ),
       );
 
-  Widget _buildPage({
-    required String title,
-    required String subtitle,
-    Widget? child,
-    String buttonText = 'Next',
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              title,
-              style:
-                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              subtitle,
-              textAlign: TextAlign.center,
-            ),
-            if (child != null) ...[
-              const SizedBox(height: 24),
-              child,
-            ],
-            const SizedBox(height: 48),
-            ElevatedButton(
-              onPressed: _nextPage,
-              child: Text(buttonText.tr()),
-            ),
-          ],
-        ),
-      ),
-    );
+  void _onNextPressed() async {
+    if (_currentPage < 3) {
+      _controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    } else {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('onboarding_complete', true);
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/main');
+    }
   }
 }
