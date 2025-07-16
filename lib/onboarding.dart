@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -11,217 +11,200 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _controller = PageController();
   int _currentPage = 0;
-  String _selectedLanguageCode = 'en';
-  bool _darkMode = false;
-  bool _dynamicTheme = false;
+  Locale _selectedLocale = const Locale('en');
+  Color? _selectedColor;
+  bool _isDarkMode = false;
+  bool _isDynamic = false;
 
   final List<Color> _accentColors = [
     Colors.red,
-    Colors.pink,
     Colors.orange,
     Colors.yellow,
     Colors.green,
     Colors.blue,
     Colors.purple,
-    Colors.cyan,
+    Colors.pink,
     Colors.teal,
     Colors.indigo,
+    Colors.brown,
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  void _nextPage() async {
+    if (_currentPage == 3) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('onboarding_complete', true);
+      await prefs.setString('language_code', _selectedLocale.languageCode);
+      await prefs.setString('theme_color', _selectedColor?.value.toRadixString(16) ?? '');
+      await prefs.setBool('dark_mode', _isDarkMode);
+      await prefs.setBool('dynamic_theme', _isDynamic);
+      if (context.mounted) {
+        Navigator.of(context).pushReplacementNamed('/main');
+      }
+    } else {
+      setState(() {
+        _currentPage++;
+      });
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-    final accentColor = theme.colorScheme.primary;
-
-    SystemChrome.setSystemUIOverlayStyle(
-      isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+  Widget _buildPageContent() {
+    final accentColor = Theme.of(context).colorScheme.secondary;
+    final textStyle = GoogleFonts.inter(
+      fontSize: 24,
+      fontWeight: FontWeight.w600,
+      color: accentColor,
     );
 
-    return Scaffold(
-      extendBody: true,
-      resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: Stack(
-          children: [
-            PageView(
-              controller: _controller,
-              onPageChanged: (index) => setState(() => _currentPage = index),
-              children: [
-                _buildWelcomePage(accentColor),
-                _buildLanguagePage(accentColor),
-                _buildAppearancePage(accentColor),
-                _buildDonePage(accentColor),
-              ],
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(4, (index) {
-                    final selected = index == _currentPage;
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        height: 8,
-                        width: selected ? 24 : 8,
-                        decoration: BoxDecoration(
-                          color: selected ? accentColor : accentColor.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 20,
-              right: 20,
-              child: FloatingActionButton.extended(
-                onPressed: _onNextPressed,
-                label: Text('Next'.tr()),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWelcomePage(Color accentColor) => Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Welcome to f.Sentence!'.tr(),
-              style: TextStyle(fontSize: 26, color: accentColor),
-            ),
+    switch (_currentPage) {
+      case 0:
+        return Center(
+          child: Text(
+            'app_store_title'.tr(),
+            style: textStyle,
+            textAlign: TextAlign.left,
           ),
-        ),
-      );
-
-  Widget _buildLanguagePage(Color accentColor) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
+        );
+      case 1:
+        return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Select your language'.tr(),
-              style: TextStyle(fontSize: 22, color: accentColor),
-            ),
-            const SizedBox(height: 20),
-            DropdownButtonFormField<String>(
-              value: _selectedLanguageCode,
-              decoration: const InputDecoration(border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(50)))),
-              items: const [
-                DropdownMenuItem(value: 'en', child: Text('English')),
-                DropdownMenuItem(value: 'sr', child: Text('Српски')),
-                DropdownMenuItem(value: 'tr', child: Text('Türkçe')),
-              ],
-              onChanged: (value) async {
-                if (value != null) {
-                  setState(() => _selectedLanguageCode = value);
-                  await context.setLocale(Locale(value));
-                  final prefs = await SharedPreferences.getInstance();
-                  await prefs.setString('language', value);
-                }
-              },
+            Text('settings_additional_language'.tr(), style: textStyle),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<Locale>(
+                  value: _selectedLocale,
+                  borderRadius: BorderRadius.circular(20),
+                  items: const [
+                    DropdownMenuItem(value: Locale('en'), child: Text('English')),
+                    DropdownMenuItem(value: Locale('sr'), child: Text('Srpski')),
+                    DropdownMenuItem(value: Locale('tr'), child: Text('Türkçe')),
+                  ],
+                  onChanged: (Locale? newValue) {
+                    if (newValue != null) {
+                      setState(() => _selectedLocale = newValue);
+                      context.setLocale(newValue);
+                    }
+                  },
+                ),
+              ),
             ),
           ],
-        ),
-      );
-
-  Widget _buildAppearancePage(Color accentColor) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
+        );
+      case 2:
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 100),
-            Text(
-              'Personalize appearance'.tr(),
-              style: TextStyle(fontSize: 22, color: accentColor),
-            ),
-            const SizedBox(height: 20),
+            Text('settings_theme_tooltip'.tr(), style: textStyle),
+            const SizedBox(height: 16),
             Wrap(
               spacing: 8,
               runSpacing: 8,
               children: _accentColors.map((color) {
+                final selected = _selectedColor == color;
                 return GestureDetector(
-                  onTap: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.setInt('accent_color', _accentColors.indexOf(color));
-                  },
+                  onTap: () => setState(() => _selectedColor = color),
                   child: Container(
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: color,
+                      border: selected
+                          ? Border.all(color: Colors.black, width: 3)
+                          : null,
                     ),
                   ),
                 );
               }).toList(),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             CheckboxListTile(
               title: Text('settings_theme_dark'.tr()),
-              value: _darkMode,
-              onChanged: (val) async {
-                setState(() => _darkMode = val ?? false);
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setBool('dark_mode', _darkMode);
-              },
+              value: _isDarkMode,
+              onChanged: (value) => setState(() => _isDarkMode = value ?? false),
             ),
             CheckboxListTile(
               title: Text('settings_theme_dynamic'.tr()),
-              value: _dynamicTheme,
-              onChanged: (val) async {
-                setState(() => _dynamicTheme = val ?? false);
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.setBool('dynamic_theme', _dynamicTheme);
-              },
+              value: _isDynamic,
+              onChanged: (value) => setState(() => _isDynamic = value ?? false),
             ),
           ],
-        ),
-      );
+        );
+      case 3:
+        return Center(
+          child: Text('You are all done!', style: textStyle),
+        );
+      default:
+        return const SizedBox.shrink();
+    }
+  }
 
-  Widget _buildDonePage(Color accentColor) => Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'You are all done!'.tr(),
-              style: TextStyle(fontSize: 24, color: accentColor),
+  Widget _buildPageIndicator() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(4, (index) {
+        final isActive = index == _currentPage;
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          width: isActive ? 24 : 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: isActive ? Theme.of(context).colorScheme.primary : Colors.grey,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        );
+      }),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+        statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+      ),
+      child: Scaffold(
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        backgroundColor: backgroundColor,
+        body: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                Expanded(child: _buildPageContent()),
+                _buildPageIndicator(),
+                const SizedBox(height: 16),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    onPressed: _nextPage,
+                    child: Text(_currentPage == 3 ? 'Done' : 'Next'),
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
             ),
           ),
         ),
-      );
-
-  void _onNextPressed() async {
-    if (_currentPage < 3) {
-      _controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
-    } else {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('onboarding_complete', true);
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/main');
-    }
+      ),
+    );
   }
 }
+
