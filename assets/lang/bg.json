@@ -1,6 +1,6 @@
 {
-    "settings_theme": "",
-    "settings_theme_tooltip": "",
+    "settings_theme": "Тема",
+    "settings_theme_tooltip": "Персонализирайте външния вид и усещането на приложението.",
     "settings_theme_mode": "",
     "settings_theme_dark": "",
     "settings_theme_light": "",
